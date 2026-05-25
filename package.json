@@ -9,7 +9,10 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "cdn:upload": "node scripts/upload-cdn.mjs",
+    "cdn:upload:logo": "node scripts/upload-cdn.mjs public/brand-logo.png brand/logo.png",
+    "cdn:studio": "node scripts/cdn-studio.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.6",
