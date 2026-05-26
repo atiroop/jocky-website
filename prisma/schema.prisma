@@ -14,8 +14,9 @@ model User {
   role         Role     @default(ADMIN)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-
-  posts Post[]
+  
+  // Relations
+  posts        Post[]
 }
 
 model Category {
@@ -26,7 +27,8 @@ model Category {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  posts Post[]
+  // Relations
+  posts       Post[]
 }
 
 model Post {
@@ -43,11 +45,12 @@ model Post {
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 
-  authorId Int
-  author   User @relation(fields: [authorId], references: [id])
+  // Relations
+  authorId    Int
+  author      User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
-  categoryId Int?
-  category   Category? @relation(fields: [categoryId], references: [id])
+  categoryId  Int?
+  category    Category?  @relation(fields: [categoryId], references: [id], onDelete: SetNull)
 
   @@index([authorId])
   @@index([categoryId])
