@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import RichTextEditor from "../components/RichTextEditor";
 
 type PostStatus = "DRAFT" | "PUBLISHED";
 type ErrorResponse = { error?: string };
@@ -72,14 +73,7 @@ export default function NewPostForm() {
             <label htmlFor="content" className="mb-2 block text-sm text-neutral-300">
               Content
             </label>
-            <textarea
-              id="content"
-              required
-              value={content}
-              onChange={(event) => setContent(event.target.value)}
-              rows={10}
-              className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-4 py-2.5 text-sm outline-none focus:border-neutral-400"
-            />
+            <RichTextEditor id="content" value={content} onChange={setContent} />
           </div>
 
           <div>
