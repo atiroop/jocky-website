@@ -3,6 +3,7 @@
 import Link from "@tiptap/extension-link";
 import StarterKit from "@tiptap/starter-kit";
 import { EditorContent, useEditor } from "@tiptap/react";
+import { useEffect } from "react";
 
 type RichTextEditorProps = {
   id: string;
@@ -53,10 +54,18 @@ export default function RichTextEditor({ id, value, onChange }: RichTextEditorPr
       attributes: {
         id,
         class:
-          "min-h-[240px] rounded-b-lg border border-t-0 border-neutral-700 bg-neutral-950 px-4 py-3 text-sm text-white outline-none focus:border-neutral-400",
+          "prose prose-invert prose-headings:text-white prose-a:text-blue-300 max-w-none min-h-[240px] rounded-b-lg border border-t-0 border-neutral-700 bg-neutral-950 px-4 py-3 text-sm text-white outline-none focus:border-neutral-400",
       },
     },
   });
+
+  useEffect(() => {
+    if (!editor) return;
+    const currentHtml = editor.getHTML();
+    if (value !== currentHtml) {
+      editor.commands.setContent(value || "", { emitUpdate: false });
+    }
+  }, [editor, value]);
 
   return (
     <div>
