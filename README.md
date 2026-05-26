@@ -54,6 +54,18 @@ All commands are run from the root of the project, from a terminal:
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `npm run astro -- --help` | Get help using the Astro CLI                     |
 
+## Deployment
+
+Production deploys are run on the VPS from `/home/jocky/apps/jocky-website`.
+
+After changes are committed and pushed to `main`, SSH into the VPS and run:
+
+```sh
+deploy-jocky
+```
+
+The deploy command pulls the latest GitHub changes, installs dependencies with `npm ci`, builds the Astro static site, and syncs `dist/` to `/home/jocky/web/jocky.website/public_html/`.
+
 ## 👀 Want to learn more?
 
 Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
