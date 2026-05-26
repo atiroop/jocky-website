@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getAdminSession } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
+import DeletePostButton from "./components/DeletePostButton";
 
 export default async function AdminPostsPage() {
   const session = await getAdminSession();
@@ -45,6 +46,7 @@ export default async function AdminPostsPage() {
                 <th className="px-4 py-3 font-medium">Slug</th>
                 <th className="px-4 py-3 font-medium">Status</th>
                 <th className="px-4 py-3 font-medium">Updated At</th>
+                <th className="px-4 py-3 font-medium">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-neutral-800">
@@ -57,11 +59,22 @@ export default async function AdminPostsPage() {
                     <td className="px-4 py-3 text-neutral-300">
                       {new Date(post.updatedAt).toLocaleString()}
                     </td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-2">
+                        <Link
+                          href={`/admin/posts/${post.id}/edit`}
+                          className="rounded-md border border-neutral-700 px-3 py-1.5 text-xs font-medium text-neutral-200 transition hover:border-neutral-500 hover:text-white"
+                        >
+                          Edit
+                        </Link>
+                        <DeletePostButton postId={post.id} />
+                      </div>
+                    </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan={4} className="px-4 py-8 text-center text-neutral-400">
+                  <td colSpan={5} className="px-4 py-8 text-center text-neutral-400">
                     No posts yet.
                   </td>
                 </tr>
