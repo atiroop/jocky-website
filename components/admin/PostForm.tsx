@@ -3,6 +3,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { generateSlug } from "@/lib/slug";
+import dynamic from "next/dynamic";
+
+const PostEditor = dynamic(() => import("./PostEditor"), { ssr: false });
 
 type PostFormProps = {
   initialData?: {
@@ -39,6 +42,12 @@ export default function PostForm({ initialData }: PostFormProps) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+
+    if (!content || content === "<p></p>") {
+      setError("Content is required");
+      return;
+    }
+
     setSaving(true);
 
     const url = isEditing
@@ -125,14 +134,7 @@ export default function PostForm({ initialData }: PostFormProps) {
         <label className="block text-sm font-medium text-neutral-300 mb-1">
           Content
         </label>
-        <textarea
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          required
-          rows={16}
-          className="w-full rounded-lg bg-neutral-800 border border-neutral-700 text-white px-4 py-2.5 text-sm font-mono resize-y focus:outline-none focus:ring-2 focus:ring-white/20"
-          placeholder="Write your post content here..."
-        />
+        <PostEditor value={content} onChange={setContent} />
       </div>
 
       <div>
