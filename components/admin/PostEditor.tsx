@@ -3,7 +3,8 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
-import { useEffect, useCallback } from "react";
+import Image from "@tiptap/extension-image";
+import { useEffect, useCallback, useRef } from "react";
 
 type Props = {
   value: string;
@@ -41,12 +42,17 @@ function ToolbarButton({
 }
 
 export default function PostEditor({ value, onChange }: Props) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const editor = useEditor({
     extensions: [
       StarterKit,
       Link.configure({
         openOnClick: false,
         HTMLAttributes: { class: "underline text-blue-400" },
+      }),
+      Image.configure({
+        HTMLAttributes: { class: "max-w-full rounded-lg my-4" },
       }),
     ],
     content: value,
@@ -80,10 +86,70 @@ export default function PostEditor({ value, onChange }: Props) {
     }
   }, [editor]);
 
+  const handleImageUpload = useCallback(
+    async (file: File) => {
+      if (!editor) return;
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const data = (await res.json()) as { error?: string };
+        alert(data.error ?? "Upload failed");
+        return;
+      }
+
+      const { url } = (await res.json()) as { url: string };
+      editor.chain().focus().setImage({ src: url }).run();
+    },
+    [editor]
+  );
+
+  const openFilePicker = useCallback(() => {
+    fileInputRef.current?.click();
+  }, []);
+
+  const onFileChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (file) handleImageUpload(file);
+      e.target.value = "";
+    },
+    [handleImageUpload]
+  );
+
+  // Paste image from clipboard
+  const onPaste = useCallback(
+    (e: React.ClipboardEvent) => {
+      const items = Array.from(e.clipboardData.items);
+      const imageItem = items.find((item) => item.type.startsWith("image/"));
+      if (!imageItem) return;
+      const file = imageItem.getAsFile();
+      if (file) {
+        e.preventDefault();
+        handleImageUpload(file);
+      }
+    },
+    [handleImageUpload]
+  );
+
   if (!editor) return null;
 
   return (
     <div className="rounded-lg border border-neutral-700 bg-neutral-800 overflow-hidden focus-within:ring-2 focus-within:ring-white/20">
+      {/* Hidden file input */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/jpeg,image/png,image/gif,image/webp,image/svg+xml"
+        className="hidden"
+        onChange={onFileChange}
+      />
+
       {/* Toolbar */}
       <div className="flex flex-wrap items-center gap-0.5 px-2 py-1.5 border-b border-neutral-700 bg-neutral-900">
         <ToolbarButton
@@ -180,6 +246,13 @@ export default function PostEditor({ value, onChange }: Props) {
           Link
         </ToolbarButton>
 
+        <ToolbarButton
+          onClick={openFilePicker}
+          title="Insert image (or paste from clipboard)"
+        >
+          🖼 Image
+        </ToolbarButton>
+
         <span className="w-px h-5 bg-neutral-700 mx-1" />
 
         <ToolbarButton
@@ -200,7 +273,9 @@ export default function PostEditor({ value, onChange }: Props) {
       </div>
 
       {/* Editor area */}
-      <EditorContent editor={editor} />
+      <div onPaste={onPaste}>
+        <EditorContent editor={editor} />
+      </div>
     </div>
   );
 }
