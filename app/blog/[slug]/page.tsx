@@ -30,6 +30,7 @@ async function getPublishedPostBySlug(slug: string) {
       seoDesc: true,
       publishedAt: true,
       createdAt: true,
+      coverImage: true,
     },
   });
 }
@@ -107,6 +108,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </header>
 
           <div className="h-px bg-[var(--color-border)] mb-12 max-w-3xl" />
+
+          {post.coverImage && (
+            <div className="mb-12 rounded-xl overflow-hidden max-w-3xl">
+              <img src={post.coverImage} alt={post.title} className="w-full max-h-[480px] object-cover" />
+            </div>
+          )}
 
           {/* Article body */}
           <div

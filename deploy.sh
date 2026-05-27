@@ -16,7 +16,7 @@ ssh -i "$SSH_KEY" "$VPS_USER@$VPS_HOST" << 'ENDSSH'
   echo "  • git pull..."
   git pull origin main
   echo "  • npm install..."
-  npm install --production
+  npm install
   echo "  • npm run build..."
   npm run build
   echo "  • restarting pm2..."

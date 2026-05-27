@@ -23,6 +23,7 @@ export default async function BlogIndexPage() {
       excerpt: true,
       publishedAt: true,
       createdAt: true,
+      coverImage: true,
     },
   });
 
@@ -78,6 +79,11 @@ export default async function BlogIndexPage() {
                 <article key={post.id}>
                   {index > 0 && <div className="h-px bg-[var(--color-border)]" />}
                   <Link href={`/blog/${post.slug}`} className="group block py-10">
+                    {post.coverImage && (
+                      <div className="mb-5 rounded-lg overflow-hidden">
+                        <img src={post.coverImage} alt={post.title} className="w-full h-52 object-cover transition-transform duration-500 group-hover:scale-105" />
+                      </div>
+                    )}
                     <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-6 md:gap-16 items-start">
                       <div>
                         <p className="label mb-4">
