@@ -1,18 +1,11 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Noto_Sans_Thai_Looped } from "next/font/google";
+import { Noto_Sans_Thai_Looped } from "next/font/google";
 import "./globals.css";
 
-const cormorant = Cormorant_Garamond({
-  variable: "--font-display",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  style: ["normal", "italic"],
-});
-
 const notoSansThaiLooped = Noto_Sans_Thai_Looped({
-  variable: "--font-body",
+  variable: "--font-main",
   subsets: ["thai", "latin"],
-  weight: ["300", "400", "500"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -29,10 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="th"
-      className={`${cormorant.variable} ${notoSansThaiLooped.variable}`}
-    >
+    <html lang="th" className={notoSansThaiLooped.variable}>
       <body className="antialiased">{children}</body>
     </html>
   );

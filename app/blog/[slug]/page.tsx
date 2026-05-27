@@ -58,16 +58,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       <header className="px-8 pt-10">
         <div className="mx-auto max-w-5xl">
           <div className="flex items-center justify-between mb-10">
-            <Link
-              href="/"
-              className="label hover:text-[var(--color-ink)] transition-colors"
-            >
+            <Link href="/" className="label hover:text-[var(--color-ink)] transition-colors">
               Jocky
             </Link>
-            <Link
-              href="/blog"
-              className="label hover:text-[var(--color-ink)] transition-colors"
-            >
+            <Link href="/blog" className="label hover:text-[var(--color-ink)] transition-colors">
               ← Journal
             </Link>
           </div>
@@ -75,11 +69,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </div>
       </header>
 
-      {/* ── Article header ── */}
+      {/* ── Article ── */}
       <article className="px-8 pt-14 pb-24">
         <div className="mx-auto max-w-5xl">
 
-          {/* Article meta */}
+          {/* Article header */}
           <header className="mb-12 max-w-3xl">
             {date && (
               <p className="label mb-5" style={{ color: "var(--color-gold)" }}>
@@ -88,13 +82,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             )}
             <h1
               style={{
-                fontFamily: "var(--font-display), Georgia, serif",
-                fontSize: "clamp(2rem, 5vw, 4rem)",
-                fontWeight: 400,
-                letterSpacing: "-0.025em",
-                lineHeight: 1.1,
+                fontSize: "clamp(2rem, 5vw, 3.5rem)",
+                fontWeight: 600,
+                letterSpacing: "-0.02em",
+                lineHeight: 1.15,
                 color: "var(--color-ink)",
-                marginBottom: "1.5rem",
+                marginBottom: "1.25rem",
               }}
             >
               {post.title}
@@ -102,11 +95,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             {post.excerpt && (
               <p
                 style={{
-                  fontFamily: "var(--font-display), Georgia, serif",
-                  fontSize: "1.2rem",
-                  fontStyle: "italic",
+                  fontSize: "1.1rem",
                   fontWeight: 300,
-                  lineHeight: 1.6,
+                  lineHeight: 1.7,
                   color: "var(--color-ink-light)",
                 }}
               >
@@ -115,7 +106,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             )}
           </header>
 
-          {/* Thin rule before body */}
           <div className="h-px bg-[var(--color-border)] mb-12 max-w-3xl" />
 
           {/* Article body */}
@@ -124,14 +114,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
           />
 
-          {/* Footer rule */}
+          {/* Footer */}
           <div className="mt-20 max-w-3xl">
             <div className="h-px bg-[var(--color-border)] mb-8" />
             <div className="flex items-center justify-between">
-              <Link
-                href="/blog"
-                className="label transition-colors hover:text-[var(--color-gold)]"
-              >
+              <Link href="/blog" className="label transition-colors hover:text-[var(--color-gold)]">
                 ← Back to journal
               </Link>
               <span className="label">jocky.website</span>

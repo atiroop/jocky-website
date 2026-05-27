@@ -33,10 +33,7 @@ export default async function BlogIndexPage() {
       <header className="px-8 pt-10">
         <div className="mx-auto max-w-5xl">
           <div className="flex items-center justify-between mb-10">
-            <Link
-              href="/"
-              className="label hover:text-[var(--color-ink)] transition-colors"
-            >
+            <Link href="/" className="label hover:text-[var(--color-ink)] transition-colors">
               Jocky
             </Link>
             <span className="label">Journal</span>
@@ -53,7 +50,6 @@ export default async function BlogIndexPage() {
           </p>
           <h1
             style={{
-              fontFamily: "var(--font-display), Georgia, serif",
               fontSize: "clamp(2.5rem, 6vw, 5rem)",
               fontWeight: 300,
               letterSpacing: "-0.02em",
@@ -72,15 +68,7 @@ export default async function BlogIndexPage() {
           {posts.length === 0 ? (
             <div className="py-20 text-center">
               <p className="label mb-3">Coming soon</p>
-              <p
-                style={{
-                  fontFamily: "var(--font-display), Georgia, serif",
-                  fontSize: "1.5rem",
-                  fontWeight: 300,
-                  fontStyle: "italic",
-                  color: "var(--color-ink-light)",
-                }}
-              >
+              <p style={{ fontSize: "1.35rem", fontWeight: 300, color: "var(--color-ink-light)" }}>
                 The first entry is being written.
               </p>
             </div>
@@ -88,9 +76,7 @@ export default async function BlogIndexPage() {
             <div>
               {posts.map((post, index) => (
                 <article key={post.id}>
-                  {index > 0 && (
-                    <div className="h-px bg-[var(--color-border)]" />
-                  )}
+                  {index > 0 && <div className="h-px bg-[var(--color-border)]" />}
                   <Link href={`/blog/${post.slug}`} className="group block py-10">
                     <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-6 md:gap-16 items-start">
                       <div>
@@ -100,11 +86,10 @@ export default async function BlogIndexPage() {
                         <h2
                           className="mb-3 transition-colors group-hover:text-[var(--color-gold)]"
                           style={{
-                            fontFamily: "var(--font-display), Georgia, serif",
-                            fontSize: "clamp(1.5rem, 3vw, 2.25rem)",
-                            fontWeight: 400,
-                            letterSpacing: "-0.02em",
-                            lineHeight: 1.2,
+                            fontSize: "clamp(1.4rem, 3vw, 2rem)",
+                            fontWeight: 500,
+                            letterSpacing: "-0.01em",
+                            lineHeight: 1.3,
                             color: "var(--color-ink)",
                           }}
                         >
@@ -113,7 +98,6 @@ export default async function BlogIndexPage() {
                         {post.excerpt && (
                           <p
                             style={{
-                              fontFamily: "var(--font-body), sans-serif",
                               fontSize: "0.95rem",
                               lineHeight: 1.7,
                               color: "var(--color-ink-light)",
@@ -125,10 +109,7 @@ export default async function BlogIndexPage() {
                         )}
                       </div>
                       <div className="flex items-center md:pt-8">
-                        <span
-                          className="label transition-colors group-hover:text-[var(--color-gold)]"
-                          style={{ letterSpacing: "0.12em" }}
-                        >
+                        <span className="label transition-colors group-hover:text-[var(--color-gold)]" style={{ letterSpacing: "0.12em" }}>
                           Read →
                         </span>
                       </div>
