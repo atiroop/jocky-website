@@ -1,24 +1,20 @@
-import { notFound, redirect } from "next/navigation";
+import { redirect, notFound } from "next/navigation";
+import Link from "next/link";
 import { getAdminSession } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
-import EditPostForm from "./post-edit-form";
+import PostForm from "@/components/admin/PostForm";
 
-export default async function EditPostPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function EditPostPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const session = await getAdminSession();
-
-  if (!session) {
-    redirect("/admin/login");
-  }
+  if (!session) redirect("/admin/login");
 
   const { id } = await params;
-  const postId = Number(id);
-
-  if (!Number.isInteger(postId) || postId <= 0) {
-    notFound();
-  }
-
   const post = await prisma.post.findUnique({
-    where: { id: postId },
+    where: { id: Number(id) },
     select: {
       id: true,
       title: true,
@@ -26,27 +22,36 @@ export default async function EditPostPage({ params }: { params: Promise<{ id: s
       excerpt: true,
       content: true,
       status: true,
-      seoTitle: true,
-      seoDesc: true,
     },
   });
 
-  if (!post) {
-    notFound();
-  }
+  if (!post) notFound();
 
   return (
-    <EditPostForm
-      postId={post.id}
-      initialData={{
-        title: post.title,
-        slug: post.slug,
-        excerpt: post.excerpt ?? "",
-        content: post.content,
-        status: post.status,
-        seoTitle: post.seoTitle ?? "",
-        seoDesc: post.seoDesc ?? "",
-      }}
-    />
+    <main className="min-h-screen bg-neutral-950 text-white px-6 py-16">
+      <section className="mx-auto w-full max-w-3xl">
+        <div className="flex items-center gap-4 mb-8">
+          <Link
+            href="/admin/posts"
+            className="text-neutral-400 hover:text-white text-sm transition-colors"
+          >
+            ← Posts
+          </Link>
+          <h1 className="text-3xl font-semibold tracking-tight">Edit Post</h1>
+        </div>
+        <div className="rounded-2xl border border-neutral-800 bg-neutral-900/70 p-8">
+          <PostForm
+            initialData={{
+              id: post.id,
+              title: post.title,
+              slug: post.slug,
+              excerpt: post.excerpt ?? "",
+              content: post.content,
+              status: post.status,
+            }}
+          />
+        </div>
+      </section>
+    </main>
   );
 }
