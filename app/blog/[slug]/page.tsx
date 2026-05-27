@@ -1,21 +1,20 @@
 import type { Metadata } from "next";
-
-export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { sanitizeHtml } from "@/lib/sanitize-html";
 
+export const dynamic = "force-dynamic";
+
 type BlogPostPageProps = {
   params: Promise<{ slug: string }>;
 };
 
-function formatPublishedDate(date: Date | null) {
+function formatDate(date: Date | null) {
   if (!date) return null;
-
-  return new Intl.DateTimeFormat("en-US", {
-    month: "long",
+  return new Intl.DateTimeFormat("en-GB", {
     day: "numeric",
+    month: "long",
     year: "numeric",
   }).format(date);
 }
@@ -38,14 +37,7 @@ async function getPublishedPostBySlug(slug: string) {
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPublishedPostBySlug(slug);
-
-  if (!post) {
-    return {
-      title: "Post Not Found",
-      description: "The requested post could not be found.",
-    };
-  }
-
+  if (!post) return { title: "Not Found" };
   return {
     title: post.seoTitle || post.title,
     description: post.seoDesc || post.excerpt || undefined,
@@ -55,31 +47,99 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params;
   const post = await getPublishedPostBySlug(slug);
+  if (!post) notFound();
 
-  if (!post) {
-    notFound();
-  }
-
-  const publishedDate = formatPublishedDate(post.publishedAt ?? post.createdAt);
+  const date = formatDate(post.publishedAt ?? post.createdAt);
 
   return (
-    <main className="min-h-screen bg-neutral-950 px-6 py-16 text-neutral-100">
-      <article className="mx-auto w-full max-w-3xl">
-        <Link href="/blog" className="text-sm text-neutral-400 underline hover:text-white">
-          ← Back to blog
-        </Link>
+    <div className="min-h-screen" style={{ background: "var(--color-parchment)" }}>
 
-        <header className="mt-8 border-b border-neutral-800 pb-8">
-          {publishedDate ? <p className="text-xs uppercase tracking-[0.16em] text-neutral-500">{publishedDate}</p> : null}
-          <h1 className="mt-3 text-4xl font-semibold tracking-tight text-white">{post.title}</h1>
-          {post.excerpt ? <p className="mt-4 text-base leading-8 text-neutral-300">{post.excerpt}</p> : null}
-        </header>
+      {/* ── Header ── */}
+      <header className="px-8 pt-10">
+        <div className="mx-auto max-w-5xl">
+          <div className="flex items-center justify-between mb-10">
+            <Link
+              href="/"
+              className="label hover:text-[var(--color-ink)] transition-colors"
+            >
+              Jocky
+            </Link>
+            <Link
+              href="/blog"
+              className="label hover:text-[var(--color-ink)] transition-colors"
+            >
+              ← Journal
+            </Link>
+          </div>
+          <div className="h-px bg-[var(--color-ink)]" />
+        </div>
+      </header>
 
-        <section
-          className="prose prose-invert mt-10 max-w-none text-neutral-200 prose-p:leading-8 prose-a:text-neutral-100 prose-a:underline"
-          dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
-        />
+      {/* ── Article header ── */}
+      <article className="px-8 pt-14 pb-24">
+        <div className="mx-auto max-w-5xl">
+
+          {/* Article meta */}
+          <header className="mb-12 max-w-3xl">
+            {date && (
+              <p className="label mb-5" style={{ color: "var(--color-gold)" }}>
+                {date}
+              </p>
+            )}
+            <h1
+              style={{
+                fontFamily: "var(--font-display), Georgia, serif",
+                fontSize: "clamp(2rem, 5vw, 4rem)",
+                fontWeight: 400,
+                letterSpacing: "-0.025em",
+                lineHeight: 1.1,
+                color: "var(--color-ink)",
+                marginBottom: "1.5rem",
+              }}
+            >
+              {post.title}
+            </h1>
+            {post.excerpt && (
+              <p
+                style={{
+                  fontFamily: "var(--font-display), Georgia, serif",
+                  fontSize: "1.2rem",
+                  fontStyle: "italic",
+                  fontWeight: 300,
+                  lineHeight: 1.6,
+                  color: "var(--color-ink-light)",
+                }}
+              >
+                {post.excerpt}
+              </p>
+            )}
+          </header>
+
+          {/* Thin rule before body */}
+          <div className="h-px bg-[var(--color-border)] mb-12 max-w-3xl" />
+
+          {/* Article body */}
+          <div
+            className="article-body max-w-2xl"
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
+          />
+
+          {/* Footer rule */}
+          <div className="mt-20 max-w-3xl">
+            <div className="h-px bg-[var(--color-border)] mb-8" />
+            <div className="flex items-center justify-between">
+              <Link
+                href="/blog"
+                className="label transition-colors hover:text-[var(--color-gold)]"
+              >
+                ← Back to journal
+              </Link>
+              <span className="label">jocky.website</span>
+            </div>
+          </div>
+
+        </div>
       </article>
-    </main>
+    </div>
   );
 }

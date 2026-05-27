@@ -1,14 +1,13 @@
 import Link from "next/link";
-
-export const dynamic = "force-dynamic";
 import { prisma } from "@/lib/prisma";
 
-function formatPublishedDate(date: Date | null) {
-  if (!date) return "Unscheduled";
+export const dynamic = "force-dynamic";
 
-  return new Intl.DateTimeFormat("en-US", {
-    month: "long",
+function formatDate(date: Date | null) {
+  if (!date) return "";
+  return new Intl.DateTimeFormat("en-GB", {
     day: "numeric",
+    month: "long",
     year: "numeric",
   }).format(date);
 }
@@ -28,50 +27,120 @@ export default async function BlogIndexPage() {
   });
 
   return (
-    <main className="min-h-screen bg-neutral-950 px-6 py-16 text-neutral-100">
-      <section className="mx-auto w-full max-w-4xl">
-        <header className="mb-12 border-b border-neutral-800 pb-8">
-          <p className="text-xs uppercase tracking-[0.22em] text-neutral-500">Journal</p>
-          <h1 className="mt-3 text-4xl font-semibold tracking-tight text-white">Blog</h1>
-          <p className="mt-4 max-w-2xl text-sm leading-7 text-neutral-400">
-            Notes, stories, and product updates from our team.
-          </p>
-        </header>
+    <div className="min-h-screen" style={{ background: "var(--color-parchment)" }}>
 
-        {posts.length === 0 ? (
-          <div className="rounded-xl border border-neutral-800 bg-neutral-900/40 px-6 py-12 text-center">
-            <h2 className="text-lg font-medium text-white">No published posts yet</h2>
-            <p className="mt-2 text-sm text-neutral-400">Check back soon for the first article.</p>
+      {/* ── Header ── */}
+      <header className="px-8 pt-10">
+        <div className="mx-auto max-w-5xl">
+          <div className="flex items-center justify-between mb-10">
+            <Link
+              href="/"
+              className="label hover:text-[var(--color-ink)] transition-colors"
+            >
+              Jocky
+            </Link>
+            <span className="label">Journal</span>
           </div>
-        ) : (
-          <div className="space-y-8">
-            {posts.map((post) => (
-              <article
-                key={post.id}
-                className="rounded-xl border border-neutral-800 bg-neutral-900/30 px-6 py-7 transition hover:border-neutral-700"
-              >
-                <p className="text-xs uppercase tracking-[0.16em] text-neutral-500">
-                  {formatPublishedDate(post.publishedAt ?? post.createdAt)}
-                </p>
-                <h2 className="mt-3 text-2xl font-semibold tracking-tight text-white">
-                  <Link href={`/blog/${post.slug}`} className="hover:text-neutral-200">
-                    {post.title}
-                  </Link>
-                </h2>
-                {post.excerpt ? <p className="mt-3 text-sm leading-7 text-neutral-300">{post.excerpt}</p> : null}
-                <div className="mt-5">
-                  <Link
-                    href={`/blog/${post.slug}`}
-                    className="text-sm text-neutral-300 underline decoration-neutral-600 underline-offset-4 hover:text-white"
-                  >
-                    Read article
-                  </Link>
-                </div>
-              </article>
-            ))}
-          </div>
-        )}
+          <div className="h-px bg-[var(--color-ink)]" />
+        </div>
+      </header>
+
+      {/* ── Hero title ── */}
+      <section className="px-8 py-14">
+        <div className="mx-auto max-w-5xl">
+          <p className="label mb-4" style={{ color: "var(--color-gold)" }}>
+            All entries
+          </p>
+          <h1
+            style={{
+              fontFamily: "var(--font-display), Georgia, serif",
+              fontSize: "clamp(2.5rem, 6vw, 5rem)",
+              fontWeight: 300,
+              letterSpacing: "-0.02em",
+              lineHeight: 1.1,
+              color: "var(--color-ink)",
+            }}
+          >
+            The Journal
+          </h1>
+        </div>
       </section>
-    </main>
+
+      {/* ── Post list ── */}
+      <main className="px-8 pb-24">
+        <div className="mx-auto max-w-5xl">
+          {posts.length === 0 ? (
+            <div className="py-20 text-center">
+              <p className="label mb-3">Coming soon</p>
+              <p
+                style={{
+                  fontFamily: "var(--font-display), Georgia, serif",
+                  fontSize: "1.5rem",
+                  fontWeight: 300,
+                  fontStyle: "italic",
+                  color: "var(--color-ink-light)",
+                }}
+              >
+                The first entry is being written.
+              </p>
+            </div>
+          ) : (
+            <div>
+              {posts.map((post, index) => (
+                <article key={post.id}>
+                  {index > 0 && (
+                    <div className="h-px bg-[var(--color-border)]" />
+                  )}
+                  <Link href={`/blog/${post.slug}`} className="group block py-10">
+                    <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-6 md:gap-16 items-start">
+                      <div>
+                        <p className="label mb-4">
+                          {formatDate(post.publishedAt ?? post.createdAt)}
+                        </p>
+                        <h2
+                          className="mb-3 transition-colors group-hover:text-[var(--color-gold)]"
+                          style={{
+                            fontFamily: "var(--font-display), Georgia, serif",
+                            fontSize: "clamp(1.5rem, 3vw, 2.25rem)",
+                            fontWeight: 400,
+                            letterSpacing: "-0.02em",
+                            lineHeight: 1.2,
+                            color: "var(--color-ink)",
+                          }}
+                        >
+                          {post.title}
+                        </h2>
+                        {post.excerpt && (
+                          <p
+                            style={{
+                              fontFamily: "var(--font-body), sans-serif",
+                              fontSize: "0.95rem",
+                              lineHeight: 1.7,
+                              color: "var(--color-ink-light)",
+                              maxWidth: "52ch",
+                            }}
+                          >
+                            {post.excerpt}
+                          </p>
+                        )}
+                      </div>
+                      <div className="flex items-center md:pt-8">
+                        <span
+                          className="label transition-colors group-hover:text-[var(--color-gold)]"
+                          style={{ letterSpacing: "0.12em" }}
+                        >
+                          Read →
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                </article>
+              ))}
+              <div className="h-px bg-[var(--color-ink)]" />
+            </div>
+          )}
+        </div>
+      </main>
+    </div>
   );
 }
