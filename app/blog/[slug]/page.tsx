@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { sanitizeHtml } from "@/lib/sanitize-html";
@@ -110,8 +111,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <div className="h-px bg-[var(--color-border)] mb-12 max-w-3xl" />
 
           {post.coverImage && (
-            <div className="mb-12 rounded-xl overflow-hidden max-w-3xl">
-              <img src={post.coverImage} alt={post.title} className="w-full max-h-[480px] object-cover" />
+            <div className="mb-12 rounded-xl overflow-hidden max-w-3xl relative" style={{ maxHeight: 480, height: 480 }}>
+              <Image src={post.coverImage} alt={post.title} fill className="object-cover" />
             </div>
           )}
 

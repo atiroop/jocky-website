@@ -32,9 +32,12 @@ export async function POST(request: Request) {
       content?: string;
       excerpt?: string;
       status?: string;
+      coverImage?: string | null;
+      seoTitle?: string | null;
+      seoDesc?: string | null;
     };
 
-    const { title, slug, content, excerpt, status } = body;
+    const { title, slug, content, excerpt, status, coverImage, seoTitle, seoDesc } = body;
 
     if (!title?.trim() || !slug?.trim() || !content?.trim()) {
       return NextResponse.json(
@@ -52,6 +55,9 @@ export async function POST(request: Request) {
         status: status === "PUBLISHED" ? "PUBLISHED" : "DRAFT",
         authorId: session.userId,
         publishedAt: status === "PUBLISHED" ? new Date() : null,
+        coverImage: coverImage ?? null,
+        seoTitle: seoTitle ?? null,
+        seoDesc: seoDesc ?? null,
       },
     });
 

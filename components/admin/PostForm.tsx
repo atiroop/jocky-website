@@ -63,7 +63,9 @@ export default function PostForm({ initialData }: PostFormProps) {
   function handleTitleChange(value: string) {
     setTitle(value);
     if (!isEditing) {
-      setSlug(generateSlug(value));
+      const generated = generateSlug(value);
+      // Thai/non-ASCII titles produce an empty slug — fall back to a timestamp slug
+      setSlug(generated || (value.trim() ? `post-${Date.now()}` : ""));
     }
   }
 

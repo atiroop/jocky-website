@@ -26,9 +26,12 @@ export async function PUT(request: Request, { params }: Params) {
     content?: string;
     excerpt?: string;
     status?: string;
+    coverImage?: string | null;
+    seoTitle?: string | null;
+    seoDesc?: string | null;
   };
 
-  const { title, slug, content, excerpt, status } = body;
+  const { title, slug, content, excerpt, status, coverImage, seoTitle, seoDesc } = body;
 
   if (!title?.trim() || !slug?.trim() || !content?.trim()) {
     return NextResponse.json(
@@ -53,6 +56,9 @@ export async function PUT(request: Request, { params }: Params) {
           status === "PUBLISHED" && !existing.publishedAt
             ? new Date()
             : existing.publishedAt,
+        coverImage: coverImage ?? null,
+        seoTitle: seoTitle ?? null,
+        seoDesc: seoDesc ?? null,
       },
     });
 
