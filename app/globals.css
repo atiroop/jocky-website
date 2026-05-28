@@ -4,154 +4,129 @@
 @theme inline {
   --font-sans: var(--font-main);
 
-  --color-ink:        #1C1917;
-  --color-ink-light:  #6B6560;
-  --color-ink-faint:  #A8A29E;
-  --color-parchment:  #F9F6F1;
-  --color-paper:      #FFFFFF;
-  --color-border:     #E7E0D5;
-  --color-gold:       #B8925A;
-  --color-gold-light: #D4B483;
+  /* ── Brand palette ───────────────────────────────────────── */
+  --color-bg:       #0B1220;
+  --color-surface:  #111827;
+  --color-surface2: #1E293B;
+  --color-border:   #1E293B;
+  --color-border2:  #374151;
+  --color-text:     #F1F5F9;
+  --color-muted:    #94A3B8;
+  --color-faint:    #64748B;
+  --color-green:    #22C55E;
+  --color-green-d:  #16A34A;
+  --color-blue:     #3B82F6;
+  --color-cyan:     #06B6D4;
+  --color-violet:   #8B5CF6;
+
+  /* ── Syntax highlighting (VS Code Dark+) ─────────────────── */
+  --syn-keyword:    #569CD6;
+  --syn-string:     #CE9178;
+  --syn-function:   #DCDCAA;
+  --syn-comment:    #6A9955;
+  --syn-number:     #B5CEA8;
+  --syn-type:       #4EC9B0;
+  --syn-property:   #9CDCFE;
+  --syn-control:    #C586C0;
+  --syn-text:       #D4D4D4;
 }
 
-/* ─── Base — ทุกอย่างใช้ Noto Sans Thai Looped ──── */
+/* ─── Base ─────────────────────────────────────────────────── */
 *, *::before, *::after {
   font-family: var(--font-main), "Noto Sans Thai", system-ui, sans-serif;
 }
 
 body {
-  background-color: var(--color-parchment);
-  color: var(--color-ink);
+  background-color: var(--color-bg);
+  color: var(--color-text);
   font-size: 16px;
-  line-height: 1.75;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
+/* ─── Code / mono ──────────────────────────────────────────── */
+code, pre, kbd, samp {
+  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code",
+               ui-monospace, "Menlo", "Monaco", monospace;
+  font-size: 0.875em;
 }
 
-/* ─── Editorial label ───────────────────────────── */
-.label {
-  font-size: 0.65rem;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--color-ink-light);
-}
-
-/* ─── Thin ruled line ───────────────────────────── */
-.rule {
-  border: none;
-  border-top: 1px solid var(--color-border);
-  margin: 0;
-}
-
-/* ─── Prose article styles ──────────────────────── */
+/* ─── Article body (blog post content) ─────────────────────── */
 .article-body {
   font-size: 1.05rem;
-  line-height: 1.85;
-  color: var(--color-ink);
+  line-height: 1.9;
+  color: var(--color-text);
 }
 
-.article-body p {
-  margin-bottom: 1.5rem;
-}
-
-.article-body h2 {
-  font-size: 1.65rem;
-  font-weight: 600;
-  margin-top: 3rem;
-  margin-bottom: 1rem;
-  letter-spacing: -0.01em;
-}
-
-.article-body h3 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-top: 2.5rem;
-  margin-bottom: 0.75rem;
-}
-
-.article-body strong {
-  font-weight: 700;
-  color: var(--color-ink);
-}
-
-.article-body em {
-  font-style: italic;
-}
+.article-body p  { margin-bottom: 1.5rem; }
+.article-body h2 { font-size: 1.5rem; font-weight: 700; margin: 2.5rem 0 1rem; color: #fff; letter-spacing: -0.01em; }
+.article-body h3 { font-size: 1.2rem; font-weight: 600; margin: 2rem 0 0.75rem; color: #fff; }
+.article-body strong { font-weight: 700; color: #fff; }
+.article-body em    { font-style: italic; }
 
 .article-body a {
-  color: var(--color-ink);
+  color: var(--color-blue);
   text-decoration: underline;
-  text-decoration-color: var(--color-gold);
   text-underline-offset: 3px;
   transition: color 0.15s;
 }
-
-.article-body a:hover {
-  color: var(--color-gold);
-}
+.article-body a:hover { color: var(--color-cyan); }
 
 .article-body blockquote {
-  border-left: 2px solid var(--color-gold);
+  border-left: 2px solid var(--color-green);
   padding-left: 1.5rem;
   margin: 2rem 0;
-  font-size: 1.15rem;
-  font-weight: 300;
-  color: var(--color-ink-light);
+  color: var(--color-muted);
+  font-size: 1.1rem;
   line-height: 1.7;
 }
 
 .article-body ul,
-.article-body ol {
-  padding-left: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.article-body ul { list-style-type: disc; }
-.article-body ol { list-style-type: decimal; }
-
-.article-body li { margin-bottom: 0.4rem; }
+.article-body ol { padding-left: 1.5rem; margin-bottom: 1.5rem; }
+.article-body ul  { list-style-type: disc; }
+.article-body ol  { list-style-type: decimal; }
+.article-body li  { margin-bottom: 0.4rem; color: var(--color-muted); }
 
 .article-body code {
-  font-family: "Menlo", "Monaco", monospace;
-  font-size: 0.88em;
-  background: rgba(0,0,0,0.05);
-  padding: 0.15em 0.4em;
-  border-radius: 3px;
+  font-family: ui-monospace, "Menlo", "Monaco", monospace;
+  font-size: 0.85em;
+  background: #1E293B;
+  color: var(--color-cyan);
+  padding: 0.15em 0.45em;
+  border-radius: 4px;
+  border: 1px solid #334155;
 }
 
 .article-body pre {
-  background: var(--color-ink);
-  color: #E8E3D8;
-  padding: 1.25rem 1.5rem;
-  border-radius: 6px;
+  background: #0D1117;
+  color: var(--syn-text);
+  padding: 1.5rem;
+  border-radius: 8px;
   overflow-x: auto;
   margin-bottom: 1.5rem;
+  border: 1px solid #1E293B;
   font-size: 0.875rem;
-  line-height: 1.65;
+  line-height: 1.7;
 }
 
 .article-body pre code {
-  font-family: "Menlo", "Monaco", monospace;
   background: none;
   padding: 0;
-  font-size: inherit;
+  border: none;
   color: inherit;
+  font-size: inherit;
 }
 
 .article-body img {
   max-width: 100%;
   height: auto;
-  border-radius: 4px;
+  border-radius: 8px;
   margin: 2rem 0;
+  border: 1px solid var(--color-border2);
 }
 
 .article-body hr {
   border: none;
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-border2);
   margin: 2.5rem 0;
 }

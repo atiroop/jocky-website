@@ -7,38 +7,27 @@ import { sanitizeHtml } from "@/lib/sanitize-html";
 
 export const dynamic = "force-dynamic";
 
-type BlogPostPageProps = {
-  params: Promise<{ slug: string }>;
-};
+type BlogPostPageProps = { params: Promise<{ slug: string }> };
 
 function formatDate(date: Date | null) {
   if (!date) return null;
-  return new Intl.DateTimeFormat("en-GB", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  }).format(date);
+  return new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric" }).format(date);
 }
 
-async function getPublishedPostBySlug(slug: string) {
+async function getPublishedPost(slug: string) {
   return prisma.post.findFirst({
     where: { slug, status: "PUBLISHED" },
     select: {
-      title: true,
-      excerpt: true,
-      content: true,
-      seoTitle: true,
-      seoDesc: true,
-      publishedAt: true,
-      createdAt: true,
-      coverImage: true,
+      title: true, excerpt: true, content: true,
+      seoTitle: true, seoDesc: true,
+      publishedAt: true, createdAt: true, coverImage: true,
     },
   });
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = await getPublishedPostBySlug(slug);
+  const post = await getPublishedPost(slug);
   if (!post) return { title: "Not Found" };
   return {
     title: post.seoTitle || post.title,
@@ -48,91 +37,81 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params;
-  const post = await getPublishedPostBySlug(slug);
+  const post = await getPublishedPost(slug);
   if (!post) notFound();
 
   const date = formatDate(post.publishedAt ?? post.createdAt);
 
   return (
-    <div className="min-h-screen" style={{ background: "var(--color-parchment)" }}>
+    <div className="min-h-screen bg-[#0B1220] text-slate-100">
 
-      {/* ── Header ── */}
-      <header className="px-8 pt-10">
-        <div className="mx-auto max-w-5xl">
-          <div className="flex items-center justify-between mb-10">
-            <Link href="/" className="label hover:text-[var(--color-ink)] transition-colors">
-              Jocky
-            </Link>
-            <Link href="/blog" className="label hover:text-[var(--color-ink)] transition-colors">
-              ← Journal
-            </Link>
-          </div>
-          <div className="h-px bg-[var(--color-ink)]" />
+      {/* Header */}
+      <header className="sticky top-0 z-30 border-b border-slate-800/80 bg-[#0B1220]/90 backdrop-blur-md">
+        <div className="max-w-3xl mx-auto px-5 md:px-8 h-14 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-1 group">
+            <span className="text-slate-600 font-mono group-hover:text-green-400 transition-colors">{"<"}</span>
+            <span className="text-white font-semibold text-sm tracking-tight">Jocky</span>
+            <span className="text-slate-600 font-mono group-hover:text-green-400 transition-colors">{"/>"}</span>
+          </Link>
+          <Link href="/blog" className="text-slate-500 hover:text-white text-xs font-mono transition-colors">
+            ← blog
+          </Link>
         </div>
       </header>
 
-      {/* ── Article ── */}
-      <article className="px-8 pt-14 pb-24">
-        <div className="mx-auto max-w-5xl">
+      {/* Article */}
+      <article className="max-w-3xl mx-auto px-5 md:px-8 pt-14 pb-28">
 
-          {/* Article header */}
-          <header className="mb-12 max-w-3xl">
-            {date && (
-              <p className="label mb-5" style={{ color: "var(--color-gold)" }}>
-                {date}
-              </p>
-            )}
-            <h1
-              style={{
-                fontSize: "clamp(2rem, 5vw, 3.5rem)",
-                fontWeight: 600,
-                letterSpacing: "-0.02em",
-                lineHeight: 1.15,
-                color: "var(--color-ink)",
-                marginBottom: "1.25rem",
-              }}
-            >
-              {post.title}
-            </h1>
-            {post.excerpt && (
-              <p
-                style={{
-                  fontSize: "1.1rem",
-                  fontWeight: 300,
-                  lineHeight: 1.7,
-                  color: "var(--color-ink-light)",
-                }}
-              >
-                {post.excerpt}
-              </p>
-            )}
-          </header>
-
-          <div className="h-px bg-[var(--color-border)] mb-12 max-w-3xl" />
-
-          {post.coverImage && (
-            <div className="mb-12 rounded-xl overflow-hidden max-w-3xl relative" style={{ maxHeight: 480, height: 480 }}>
-              <Image src={post.coverImage} alt={post.title} fill className="object-cover" />
-            </div>
+        {/* Meta */}
+        <div className="mb-8">
+          {date && (
+            <p className="text-green-400 text-xs font-mono tracking-widest mb-5">
+              {"// "}{date}
+            </p>
           )}
+          <h1 className="text-3xl md:text-4xl lg:text-[2.6rem] font-bold text-white leading-[1.1] tracking-tight mb-5">
+            {post.title}
+          </h1>
+          {post.excerpt && (
+            <p className="text-slate-400 text-lg leading-relaxed border-l-2 border-slate-700 pl-5">
+              {post.excerpt}
+            </p>
+          )}
+        </div>
 
-          {/* Article body */}
-          <div
-            className="article-body max-w-2xl"
-            dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
-          />
+        {/* Divider */}
+        <div className="h-px bg-slate-800 mb-10" />
 
-          {/* Footer */}
-          <div className="mt-20 max-w-3xl">
-            <div className="h-px bg-[var(--color-border)] mb-8" />
-            <div className="flex items-center justify-between">
-              <Link href="/blog" className="label transition-colors hover:text-[var(--color-gold)]">
-                ← Back to journal
-              </Link>
-              <span className="label">jocky.website</span>
-            </div>
+        {/* Cover image */}
+        {post.coverImage && (
+          <div className="relative rounded-xl overflow-hidden mb-12 border border-slate-800" style={{ height: 400 }}>
+            <Image src={post.coverImage} alt={post.title} fill className="object-cover" />
           </div>
+        )}
 
+        {/* Content */}
+        <div
+          className="article-body"
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
+        />
+
+        {/* Footer nav */}
+        <div className="mt-20 border-t border-slate-800 pt-8 flex items-center justify-between">
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-2 text-slate-500 hover:text-green-400 text-sm transition-colors cursor-pointer font-mono"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+            </svg>
+            Back to blog
+          </Link>
+          <Link
+            href="/"
+            className="text-slate-700 hover:text-slate-400 text-xs font-mono transition-colors"
+          >
+            jocky.website
+          </Link>
         </div>
       </article>
     </div>
