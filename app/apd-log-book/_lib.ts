@@ -9,7 +9,7 @@ export const defaultPrescriptionValues = {
   fillVolumeMl: 2000,
   cycles: 5,
   dwellTimeMinutes: 90,
-  lastFillMl: null as number | null,
+  lastFillMl: 0,
   manualExchange: null as string | null,
   isDefaultProfile: true,
 };
@@ -20,7 +20,16 @@ export async function ensureDefaultPrescription(userId: number) {
     orderBy: { updatedAt: "desc" },
   });
 
-  if (existing) return existing;
+  if (existing) {
+    if (existing.lastFillMl === null) {
+      return prisma.aPDPrescription.update({
+        where: { id: existing.id },
+        data: { lastFillMl: 0 },
+      });
+    }
+
+    return existing;
+  }
 
   return prisma.aPDPrescription.create({
     data: {

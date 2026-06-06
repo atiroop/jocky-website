@@ -70,7 +70,7 @@ model APDPrescription {
   fillVolumeMl       Int
   cycles             Int
   dwellTimeMinutes   Int
-  lastFillMl         Int?
+  lastFillMl         Int?     @default(0)
   manualExchange     String?
   isDefaultProfile   Boolean  @default(false)
   createdAt          DateTime @default(now())

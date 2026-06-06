@@ -64,7 +64,7 @@ export default async function EditApdLogPage({
           fillVolumeMl: fallbackPrescription.fillVolumeMl,
           cycles: fallbackPrescription.cycles,
           dwellTimeMinutes: fallbackPrescription.dwellTimeMinutes,
-          lastFillMl: fallbackPrescription.lastFillMl,
+          lastFillMl: fallbackPrescription.lastFillMl ?? 0,
           manualExchange: fallbackPrescription.manualExchange,
           isDefaultProfile: fallbackPrescription.isDefaultProfile,
         }}

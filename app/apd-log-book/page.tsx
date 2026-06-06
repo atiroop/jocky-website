@@ -196,7 +196,7 @@ export default async function ApdLogBookPage({
             <p><span className="block text-slate-500">Fill volume</span>{latestLog.prescription.fillVolumeMl} ml</p>
             <p><span className="block text-slate-500">Cycles</span>{latestLog.prescription.cycles}</p>
             <p><span className="block text-slate-500">Dwell time</span>{latestLog.prescription.dwellTimeMinutes} min</p>
-            <p><span className="block text-slate-500">Last fill</span>{latestLog.prescription.lastFillMl ?? "—"} ml</p>
+            <p><span className="block text-slate-500">Last fill</span>{latestLog.prescription.lastFillMl ?? 0} ml</p>
           </div>
         </section>
       )}

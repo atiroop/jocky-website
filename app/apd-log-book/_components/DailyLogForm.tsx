@@ -59,6 +59,15 @@ const inputClass =
 
 const textareaClass = `${inputClass} resize-none`;
 
+const drainageAppearanceOptions = [
+  "Clear",
+  "Light yellow",
+  "Cloudy",
+  "Fibrin strands",
+  "Pink/blood-tinged",
+  "Other - see remark",
+];
+
 export default function DailyLogForm({
   action,
   log,
@@ -66,6 +75,10 @@ export default function DailyLogForm({
   error,
 }: DailyLogFormProps) {
   const isEditing = Boolean(log?.id);
+  const selectedDrainageAppearance = log?.drainageAppearance ?? "";
+  const hasCustomDrainageAppearance =
+    selectedDrainageAppearance !== "" &&
+    !drainageAppearanceOptions.includes(selectedDrainageAppearance);
 
   return (
     <form action={action} className="space-y-7">
@@ -185,12 +198,23 @@ export default function DailyLogForm({
             />
           </Field>
           <Field label="Drainage appearance">
-            <input
+            <select
               className={inputClass}
               name="drainageAppearance"
-              type="text"
-              defaultValue={log?.drainageAppearance ?? ""}
-            />
+              defaultValue={selectedDrainageAppearance}
+            >
+              <option value="">Not recorded</option>
+              {hasCustomDrainageAppearance && (
+                <option value={selectedDrainageAppearance}>
+                  {selectedDrainageAppearance}
+                </option>
+              )}
+              {drainageAppearanceOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
           </Field>
         </div>
 
@@ -304,7 +328,7 @@ export default function DailyLogForm({
               name="lastFillMl"
               type="number"
               min="0"
-              defaultValue={prescription.lastFillMl ?? ""}
+              defaultValue={prescription.lastFillMl ?? 0}
             />
           </Field>
         </div>
