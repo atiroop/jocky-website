@@ -17,6 +17,8 @@ model User {
   
   // Relations
   posts        Post[]
+  apdPrescriptions APDPrescription[]
+  apdDailyLogs     APDDailyLog[]
 }
 
 model Category {
@@ -56,6 +58,58 @@ model Post {
   @@index([categoryId])
   @@index([status])
   @@index([publishedAt])
+}
+
+model APDPrescription {
+  id                 Int      @id @default(autoincrement())
+  name               String   @default("Default prescription profile")
+  solutionBag1       String
+  solutionBag2       String
+  totalVolumeMl      Int
+  therapyTimeMinutes Int
+  fillVolumeMl       Int
+  cycles             Int
+  dwellTimeMinutes   Int
+  lastFillMl         Int?
+  manualExchange     String?
+  isDefaultProfile   Boolean  @default(false)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  userId             Int
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dailyLogs          APDDailyLog[]
+
+  @@index([userId])
+  @@index([isDefaultProfile])
+}
+
+model APDDailyLog {
+  id                 Int      @id @default(autoincrement())
+  date               DateTime @db.Date
+  treatmentStartTime String
+  weightKg           Decimal  @db.Decimal(5, 2)
+  systolicBp         Int
+  diastolicBp        Int
+  pulse              Int
+  bloodGlucoseMgDl   Int?
+  iDrainVolumeMl     Int
+  totalUfMl          Int
+  urineAvgDayMl      Int
+  drainageAppearance String?
+  remark             String?  @db.Text
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  userId             Int
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  prescriptionId     Int?
+  prescription       APDPrescription? @relation(fields: [prescriptionId], references: [id], onDelete: SetNull)
+
+  @@unique([userId, date])
+  @@index([userId])
+  @@index([date])
+  @@index([prescriptionId])
 }
 
 enum Role {

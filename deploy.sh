@@ -17,6 +17,10 @@ ssh -i "$SSH_KEY" "$VPS_USER@$VPS_HOST" << 'ENDSSH'
   git pull origin main
   echo "  • npm install..."
   npm install
+  echo "  • prisma generate..."
+  npx prisma generate
+  echo "  • prisma migrate deploy..."
+  npx prisma migrate deploy
   echo "  • npm run build..."
   npm run build
   echo "  • restarting pm2..."
