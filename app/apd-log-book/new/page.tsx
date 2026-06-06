@@ -22,9 +22,9 @@ export default async function NewApdLogPage({
     <ApdShell>
       <div className="mb-8">
         <p className="text-green-400 text-xs font-mono tracking-widest mb-3">
-          {"// new entry"}
+          {"// บันทึกใหม่"}
         </p>
-        <h1 className="text-3xl font-bold tracking-tight text-white">New daily APD log</h1>
+        <h1 className="text-3xl font-bold tracking-tight text-white">บันทึก APD ประจำวัน</h1>
       </div>
       <DailyLogForm
         action={createDailyLog}

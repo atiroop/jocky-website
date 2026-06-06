@@ -4,7 +4,7 @@ import { getAdminSession } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
 import ApdShell from "../_components/ApdShell";
 import { deleteDailyLog } from "../actions";
-import { formatDisplayDate, toNumber } from "../_lib";
+import { formatDisplayDate, formatDrainageAppearance, toNumber } from "../_lib";
 
 export const dynamic = "force-dynamic";
 
@@ -23,45 +23,46 @@ export default async function ApdLogsPage() {
       <div className="mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-5">
         <div>
           <p className="text-green-400 text-xs font-mono tracking-widest mb-3">
-            {"// history"}
+            {"// รายการย้อนหลัง"}
           </p>
-          <h1 className="text-3xl font-bold tracking-tight text-white">APD logs</h1>
-          <p className="mt-2 text-sm text-slate-500">{logs.length} entries</p>
+          <h1 className="text-3xl font-bold tracking-tight text-white">รายการบันทึก APD</h1>
+          <p className="mt-2 text-sm text-slate-500">{logs.length} รายการ</p>
         </div>
         <Link
           href="/apd-log-book/new"
           className="w-fit rounded-lg bg-green-500 px-4 py-2.5 text-sm font-bold text-black hover:bg-green-400 transition-colors"
         >
-          + New entry
+          + บันทึกใหม่
         </Link>
       </div>
 
       {logs.length === 0 ? (
         <div className="rounded-xl border border-slate-800 bg-slate-900/30 px-6 py-14 text-center">
-          <p className="text-sm text-slate-500">No APD logs yet.</p>
+          <p className="text-sm text-slate-500">ยังไม่มีบันทึก APD</p>
           <Link
             href="/apd-log-book/new"
             className="mt-3 inline-block text-sm font-medium text-green-400 hover:text-green-300"
           >
-            Create first entry
+            สร้างบันทึกแรก
           </Link>
         </div>
       ) : (
         <div className="overflow-x-auto rounded-xl border border-slate-800">
-          <table className="w-full min-w-[960px] text-sm">
+          <table className="w-full min-w-[1080px] text-sm">
             <thead className="bg-slate-900 text-left text-xs uppercase tracking-widest text-slate-500">
               <tr>
-                <th className="px-4 py-3 font-medium">Date</th>
-                <th className="px-4 py-3 font-medium">Start</th>
-                <th className="px-4 py-3 font-medium">Weight</th>
-                <th className="px-4 py-3 font-medium">BP</th>
-                <th className="px-4 py-3 font-medium">Pulse</th>
-                <th className="px-4 py-3 font-medium">Glucose</th>
+                <th className="px-4 py-3 font-medium">วันที่</th>
+                <th className="px-4 py-3 font-medium">เริ่ม</th>
+                <th className="px-4 py-3 font-medium">น้ำหนัก</th>
+                <th className="px-4 py-3 font-medium">ความดัน</th>
+                <th className="px-4 py-3 font-medium">ชีพจร</th>
+                <th className="px-4 py-3 font-medium">น้ำตาล</th>
                 <th className="px-4 py-3 font-medium">I-Drain</th>
                 <th className="px-4 py-3 font-medium">Total UF</th>
-                <th className="px-4 py-3 font-medium">Urine AVG/Day</th>
-                <th className="px-4 py-3 font-medium">Prescription</th>
-                <th className="px-4 py-3 font-medium">Actions</th>
+                <th className="px-4 py-3 font-medium">ปัสสาวะ/วัน</th>
+                <th className="px-4 py-3 font-medium">น้ำยาออก</th>
+                <th className="px-4 py-3 font-medium">ใบสั่งฯ</th>
+                <th className="px-4 py-3 font-medium">จัดการ</th>
               </tr>
             </thead>
             <tbody>
@@ -78,6 +79,9 @@ export default async function ApdLogsPage() {
                   <td className="px-4 py-3 text-slate-400">{log.iDrainVolumeMl} ml</td>
                   <td className="px-4 py-3 text-slate-300">{log.totalUfMl} ml</td>
                   <td className="px-4 py-3 text-slate-400">{log.urineAvgDayMl} ml</td>
+                  <td className="px-4 py-3 text-slate-400">
+                    {formatDrainageAppearance(log.drainageAppearance)}
+                  </td>
                   <td className="px-4 py-3 text-slate-400 max-w-[12rem] truncate">
                     {log.prescription?.name ?? "—"}
                   </td>
@@ -87,7 +91,7 @@ export default async function ApdLogsPage() {
                         href={`/apd-log-book/${log.id}/edit`}
                         className="text-slate-300 hover:text-white transition-colors"
                       >
-                        Edit
+                        แก้ไข
                       </Link>
                       <form action={deleteDailyLog}>
                         <input type="hidden" name="id" value={log.id} />
@@ -95,7 +99,7 @@ export default async function ApdLogsPage() {
                           type="submit"
                           className="text-red-300 hover:text-red-200 transition-colors"
                         >
-                          Delete
+                          ลบ
                         </button>
                       </form>
                     </div>

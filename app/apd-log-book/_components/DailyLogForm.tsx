@@ -60,12 +60,12 @@ const inputClass =
 const textareaClass = `${inputClass} resize-none`;
 
 const drainageAppearanceOptions = [
-  "Clear",
-  "Light yellow",
-  "Cloudy",
-  "Fibrin strands",
-  "Pink/blood-tinged",
-  "Other - see remark",
+  { value: "ใส", label: "ใส" },
+  { value: "เหลืองอ่อน", label: "เหลืองอ่อน" },
+  { value: "ขุ่น", label: "ขุ่น" },
+  { value: "มีเส้นไฟบริน", label: "มีเส้นไฟบริน" },
+  { value: "ชมพู/มีเลือดปน", label: "ชมพู/มีเลือดปน" },
+  { value: "อื่น ๆ - ดูหมายเหตุ", label: "อื่น ๆ - ดูหมายเหตุ" },
 ];
 
 export default function DailyLogForm({
@@ -78,7 +78,7 @@ export default function DailyLogForm({
   const selectedDrainageAppearance = log?.drainageAppearance ?? "";
   const hasCustomDrainageAppearance =
     selectedDrainageAppearance !== "" &&
-    !drainageAppearanceOptions.includes(selectedDrainageAppearance);
+    !drainageAppearanceOptions.some((option) => option.value === selectedDrainageAppearance);
 
   return (
     <form action={action} className="space-y-7">
@@ -86,14 +86,14 @@ export default function DailyLogForm({
 
       {error === "duplicate-date" && (
         <p className="rounded-lg border border-red-700/70 bg-red-950/40 px-4 py-3 text-sm text-red-200">
-          There is already an entry for this date.
+          มีบันทึกของวันที่นี้อยู่แล้ว
         </p>
       )}
 
       <section className="rounded-xl border border-slate-800 bg-slate-900/30 p-5 md:p-6">
         <div className="mb-5 flex items-center justify-between gap-4">
           <div>
-            <h2 className="text-lg font-semibold tracking-tight text-white">Daily data</h2>
+            <h2 className="text-lg font-semibold tracking-tight text-white">ข้อมูลประจำวัน</h2>
             <p className="mt-1 text-xs text-slate-500">
               หากค่าต่างจากรูปแบบปกติของคุณ ควรสังเกต และควรปรึกษาทีมไต
             </p>
@@ -101,7 +101,7 @@ export default function DailyLogForm({
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <Field label="Date">
+          <Field label="วันที่">
             <input
               className={inputClass}
               name="date"
@@ -110,7 +110,7 @@ export default function DailyLogForm({
               defaultValue={log?.date ?? new Date().toISOString().slice(0, 10)}
             />
           </Field>
-          <Field label="Treatment start time">
+          <Field label="เวลาเริ่มทำ APD">
             <input
               className={inputClass}
               name="treatmentStartTime"
@@ -119,7 +119,7 @@ export default function DailyLogForm({
               defaultValue={log?.treatmentStartTime ?? ""}
             />
           </Field>
-          <Field label="Weight kg">
+          <Field label="น้ำหนัก (kg)">
             <input
               className={inputClass}
               name="weightKg"
@@ -130,7 +130,7 @@ export default function DailyLogForm({
               defaultValue={log?.weightKg ?? ""}
             />
           </Field>
-          <Field label="Systolic BP">
+          <Field label="ความดันตัวบน (Systolic BP)">
             <input
               className={inputClass}
               name="systolicBp"
@@ -140,7 +140,7 @@ export default function DailyLogForm({
               defaultValue={log?.systolicBp ?? ""}
             />
           </Field>
-          <Field label="Diastolic BP">
+          <Field label="ความดันตัวล่าง (Diastolic BP)">
             <input
               className={inputClass}
               name="diastolicBp"
@@ -150,7 +150,7 @@ export default function DailyLogForm({
               defaultValue={log?.diastolicBp ?? ""}
             />
           </Field>
-          <Field label="Pulse">
+          <Field label="ชีพจร">
             <input
               className={inputClass}
               name="pulse"
@@ -160,7 +160,7 @@ export default function DailyLogForm({
               defaultValue={log?.pulse ?? ""}
             />
           </Field>
-          <Field label="Blood glucose mg/dL">
+          <Field label="น้ำตาลในเลือด (mg/dL)">
             <input
               className={inputClass}
               name="bloodGlucoseMgDl"
@@ -169,7 +169,7 @@ export default function DailyLogForm({
               defaultValue={log?.bloodGlucoseMgDl ?? ""}
             />
           </Field>
-          <Field label="I-Drain Volume ml">
+          <Field label="ปริมาณ I-Drain (ml)">
             <input
               className={inputClass}
               name="iDrainVolumeMl"
@@ -178,7 +178,7 @@ export default function DailyLogForm({
               defaultValue={log?.iDrainVolumeMl ?? ""}
             />
           </Field>
-          <Field label="Total UF ml">
+          <Field label="Total UF (ml)">
             <input
               className={inputClass}
               name="totalUfMl"
@@ -187,7 +187,7 @@ export default function DailyLogForm({
               defaultValue={log?.totalUfMl ?? ""}
             />
           </Field>
-          <Field label="Urine AVG/Day ml">
+          <Field label="ปัสสาวะเฉลี่ย/วัน (ml)">
             <input
               className={inputClass}
               name="urineAvgDayMl"
@@ -197,21 +197,21 @@ export default function DailyLogForm({
               defaultValue={log?.urineAvgDayMl ?? ""}
             />
           </Field>
-          <Field label="Drainage appearance">
+          <Field label="ลักษณะน้ำยาออก">
             <select
               className={inputClass}
               name="drainageAppearance"
               defaultValue={selectedDrainageAppearance}
             >
-              <option value="">Not recorded</option>
+              <option value="">ไม่ได้บันทึก</option>
               {hasCustomDrainageAppearance && (
                 <option value={selectedDrainageAppearance}>
                   {selectedDrainageAppearance}
                 </option>
               )}
               {drainageAppearanceOptions.map((option) => (
-                <option key={option} value={option}>
-                  {option}
+                <option key={option.value} value={option.value}>
+                  {option.label}
                 </option>
               ))}
             </select>
@@ -219,7 +219,7 @@ export default function DailyLogForm({
         </div>
 
         <div className="mt-4">
-          <Field label="Remark">
+          <Field label="หมายเหตุ">
             <textarea
               className={textareaClass}
               name="remark"
@@ -232,7 +232,7 @@ export default function DailyLogForm({
 
       <section className="rounded-xl border border-slate-800 bg-slate-900/30 p-5 md:p-6">
         <div className="mb-5 flex items-center justify-between gap-4">
-          <h2 className="text-lg font-semibold tracking-tight text-white">Prescription</h2>
+          <h2 className="text-lg font-semibold tracking-tight text-white">ใบสั่งการรักษา</h2>
           <label className="inline-flex items-center gap-2 text-sm text-slate-300">
             <input
               type="checkbox"
@@ -240,12 +240,12 @@ export default function DailyLogForm({
               defaultChecked={prescription.isDefaultProfile}
               className="h-4 w-4 rounded border-slate-700 bg-slate-900 text-green-500"
             />
-            Default prescription profile
+            ใช้เป็นโปรไฟล์เริ่มต้น
           </label>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <Field label="Profile name">
+          <Field label="ชื่อโปรไฟล์">
             <input
               className={inputClass}
               name="prescriptionName"
@@ -254,7 +254,7 @@ export default function DailyLogForm({
               defaultValue={prescription.name}
             />
           </Field>
-          <Field label="Solution bag 1">
+          <Field label="น้ำยาถุงที่ 1">
             <input
               className={inputClass}
               name="solutionBag1"
@@ -263,7 +263,7 @@ export default function DailyLogForm({
               defaultValue={prescription.solutionBag1}
             />
           </Field>
-          <Field label="Solution bag 2">
+          <Field label="น้ำยาถุงที่ 2">
             <input
               className={inputClass}
               name="solutionBag2"
@@ -272,7 +272,7 @@ export default function DailyLogForm({
               defaultValue={prescription.solutionBag2}
             />
           </Field>
-          <Field label="Total volume ml">
+          <Field label="ปริมาตรรวม (ml)">
             <input
               className={inputClass}
               name="totalVolumeMl"
@@ -282,7 +282,7 @@ export default function DailyLogForm({
               defaultValue={prescription.totalVolumeMl}
             />
           </Field>
-          <Field label="Therapy time minutes">
+          <Field label="เวลารักษารวม (นาที)">
             <input
               className={inputClass}
               name="therapyTimeMinutes"
@@ -292,7 +292,7 @@ export default function DailyLogForm({
               defaultValue={prescription.therapyTimeMinutes}
             />
           </Field>
-          <Field label="Fill volume ml">
+          <Field label="ปริมาตรเติมแต่ละรอบ (ml)">
             <input
               className={inputClass}
               name="fillVolumeMl"
@@ -302,7 +302,7 @@ export default function DailyLogForm({
               defaultValue={prescription.fillVolumeMl}
             />
           </Field>
-          <Field label="Cycles">
+          <Field label="จำนวนรอบ">
             <input
               className={inputClass}
               name="cycles"
@@ -312,7 +312,7 @@ export default function DailyLogForm({
               defaultValue={prescription.cycles}
             />
           </Field>
-          <Field label="Dwell time minutes">
+          <Field label="เวลาค้างน้ำยา (นาที)">
             <input
               className={inputClass}
               name="dwellTimeMinutes"
@@ -322,7 +322,7 @@ export default function DailyLogForm({
               defaultValue={prescription.dwellTimeMinutes}
             />
           </Field>
-          <Field label="Last fill ml">
+          <Field label="น้ำยาค้างสุดท้าย (Last fill ml)">
             <input
               className={inputClass}
               name="lastFillMl"
@@ -334,7 +334,7 @@ export default function DailyLogForm({
         </div>
 
         <div className="mt-4">
-          <Field label="Manual exchange">
+          <Field label="การเปลี่ยนน้ำยาแบบ Manual">
             <textarea
               className={textareaClass}
               name="manualExchange"
@@ -350,13 +350,13 @@ export default function DailyLogForm({
           type="submit"
           className="rounded-lg bg-green-500 px-5 py-2.5 text-sm font-bold text-black hover:bg-green-400 transition-colors"
         >
-          {isEditing ? "Update entry" : "Save entry"}
+          {isEditing ? "อัปเดตบันทึก" : "บันทึกข้อมูล"}
         </button>
         <Link
           href={isEditing ? "/apd-log-book/logs" : "/apd-log-book"}
           className="rounded-lg border border-slate-700 px-5 py-2.5 text-sm font-medium text-slate-300 hover:border-slate-500 hover:text-white transition-colors"
         >
-          Cancel
+          ยกเลิก
         </Link>
         {log?.id && (
           <button
@@ -364,7 +364,7 @@ export default function DailyLogForm({
             formAction={deleteDailyLog}
             className="rounded-lg border border-red-800 px-5 py-2.5 text-sm font-medium text-red-300 hover:bg-red-950/40 transition-colors"
           >
-            Delete
+            ลบ
           </button>
         )}
       </div>

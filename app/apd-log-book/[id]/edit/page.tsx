@@ -32,9 +32,9 @@ export default async function EditApdLogPage({
     <ApdShell>
       <div className="mb-8">
         <p className="text-green-400 text-xs font-mono tracking-widest mb-3">
-          {"// edit entry"}
+          {"// แก้ไขบันทึก"}
         </p>
-        <h1 className="text-3xl font-bold tracking-tight text-white">Edit APD log</h1>
+        <h1 className="text-3xl font-bold tracking-tight text-white">แก้ไขบันทึก APD</h1>
       </div>
       <DailyLogForm
         action={updateDailyLog}

@@ -37,7 +37,7 @@ export default function TrendChart({
   title,
   unit,
   points,
-  primaryLabel = "Value",
+  primaryLabel = "ค่า",
   secondLabel,
 }: TrendChartProps) {
   const values = points.flatMap((point) => [
@@ -53,7 +53,7 @@ export default function TrendChart({
           <span className="text-xs text-slate-600">{unit}</span>
         </div>
         <div className="h-44 rounded-lg border border-dashed border-slate-800 grid place-items-center text-sm text-slate-600">
-          No chart data
+          ยังไม่มีข้อมูลกราฟ
         </div>
       </div>
     );

@@ -64,7 +64,7 @@ export default async function ApdLogBookPage({
   const sevenDayUf = average(sevenDayLogs.map((log) => log.totalUfMl));
   const sevenDayWeight = average(sevenDayLogs.map((log) => toNumber(log.weightKg)));
   const chartPoints = chartLogs.map((log) => ({
-    label: new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short" }).format(log.date),
+    label: new Intl.DateTimeFormat("th-TH", { day: "2-digit", month: "short" }).format(log.date),
     totalUfMl: log.totalUfMl,
     weightKg: toNumber(log.weightKg),
     systolicBp: log.systolicBp,
@@ -76,13 +76,13 @@ export default async function ApdLogBookPage({
       <div className="mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-5">
         <div>
           <p className="text-green-400 text-xs font-mono tracking-widest mb-3">
-            {"// private dialysis log"}
+            {"// บันทึก APD ส่วนตัว"}
           </p>
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-white">
-            APD Log Book
+            สมุดบันทึก APD
           </h1>
           <p className="mt-2 text-sm text-slate-500">
-            Daily peritoneal dialysis data and prescription trend record.
+            บันทึกข้อมูลล้างไตทางช่องท้องและติดตามแนวโน้มประจำวัน
           </p>
         </div>
         <div className="flex flex-wrap gap-3">
@@ -90,47 +90,47 @@ export default async function ApdLogBookPage({
             href="/apd-log-book/new"
             className="rounded-lg bg-green-500 px-4 py-2.5 text-sm font-bold text-black hover:bg-green-400 transition-colors"
           >
-            + New entry
+            + บันทึกใหม่
           </Link>
           <Link
             href="/apd-log-book/logs"
             className="rounded-lg border border-slate-700 px-4 py-2.5 text-sm font-medium text-slate-300 hover:border-slate-500 hover:text-white transition-colors"
           >
-            View logs
+            ดูรายการย้อนหลัง
           </Link>
         </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
         <StatCard
-          label="Latest Total UF"
+          label="Total UF ล่าสุด"
           value={formatNumber(latestLog?.totalUfMl, " ml")}
           detail={latestLog ? formatDisplayDate(latestLog.date) : undefined}
         />
         <StatCard
-          label="Latest Weight"
+          label="น้ำหนักล่าสุด"
           value={latestLog ? formatNumber(toNumber(latestLog.weightKg), " kg") : "—"}
           detail={latestLog ? formatDisplayDate(latestLog.date) : undefined}
         />
         <StatCard
-          label="Latest BP"
+          label="ความดันล่าสุด"
           value={latestLog ? `${latestLog.systolicBp}/${latestLog.diastolicBp}` : "—"}
-          detail={latestLog ? `Pulse ${latestLog.pulse}` : undefined}
+          detail={latestLog ? `ชีพจร ${latestLog.pulse}` : undefined}
         />
         <StatCard
-          label="7-day avg Total UF"
+          label="ค่าเฉลี่ย Total UF 7 วัน"
           value={formatNumber(sevenDayUf, " ml")}
-          detail={`${sevenDayLogs.length} entries`}
+          detail={`${sevenDayLogs.length} รายการ`}
         />
         <StatCard
-          label="7-day avg Weight"
+          label="ค่าเฉลี่ยน้ำหนัก 7 วัน"
           value={formatNumber(sevenDayWeight, " kg")}
-          detail={`${sevenDayLogs.length} entries`}
+          detail={`${sevenDayLogs.length} รายการ`}
         />
       </div>
 
       <div className="mb-6 flex items-center justify-between gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-white">Trends</h2>
+        <h2 className="text-xl font-semibold tracking-tight text-white">แนวโน้ม</h2>
         <div className="flex rounded-lg border border-slate-800 bg-slate-900/40 p-1">
           {[7, 30].map((range) => (
             <Link
@@ -142,7 +142,7 @@ export default async function ApdLogBookPage({
                   : "text-slate-500 hover:text-slate-300"
               }`}
             >
-              {range} days
+              {range} วัน
             </Link>
           ))}
         </div>
@@ -158,7 +158,7 @@ export default async function ApdLogBookPage({
           }))}
         />
         <TrendChart
-          title="Weight"
+          title="น้ำหนัก"
           unit="kg"
           points={chartPoints.map((point) => ({
             label: point.label,
@@ -166,10 +166,10 @@ export default async function ApdLogBookPage({
           }))}
         />
         <TrendChart
-          title="Blood Pressure"
+          title="ความดันโลหิต"
           unit="mmHg"
-          primaryLabel="Systolic"
-          secondLabel="Diastolic"
+          primaryLabel="ตัวบน"
+          secondLabel="ตัวล่าง"
           points={chartPoints.map((point) => ({
             label: point.label,
             value: point.systolicBp,
@@ -181,22 +181,22 @@ export default async function ApdLogBookPage({
       {latestLog?.prescription && (
         <section className="rounded-xl border border-slate-800 bg-slate-900/30 p-5">
           <div className="mb-4 flex items-center justify-between gap-4">
-            <h2 className="text-lg font-semibold tracking-tight text-white">Latest prescription</h2>
+            <h2 className="text-lg font-semibold tracking-tight text-white">ใบสั่งการรักษาล่าสุด</h2>
             {latestLog.prescription.isDefaultProfile && (
               <span className="rounded-full bg-green-500/10 px-3 py-1 text-xs font-medium text-green-400">
-                Default profile
+                โปรไฟล์เริ่มต้น
               </span>
             )}
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-            <p><span className="block text-slate-500">Bag 1</span>{latestLog.prescription.solutionBag1}</p>
-            <p><span className="block text-slate-500">Bag 2</span>{latestLog.prescription.solutionBag2}</p>
-            <p><span className="block text-slate-500">Total volume</span>{latestLog.prescription.totalVolumeMl} ml</p>
-            <p><span className="block text-slate-500">Therapy time</span>{latestLog.prescription.therapyTimeMinutes} min</p>
-            <p><span className="block text-slate-500">Fill volume</span>{latestLog.prescription.fillVolumeMl} ml</p>
-            <p><span className="block text-slate-500">Cycles</span>{latestLog.prescription.cycles}</p>
-            <p><span className="block text-slate-500">Dwell time</span>{latestLog.prescription.dwellTimeMinutes} min</p>
-            <p><span className="block text-slate-500">Last fill</span>{latestLog.prescription.lastFillMl ?? 0} ml</p>
+            <p><span className="block text-slate-500">น้ำยาถุงที่ 1</span>{latestLog.prescription.solutionBag1}</p>
+            <p><span className="block text-slate-500">น้ำยาถุงที่ 2</span>{latestLog.prescription.solutionBag2}</p>
+            <p><span className="block text-slate-500">ปริมาตรรวม</span>{latestLog.prescription.totalVolumeMl} ml</p>
+            <p><span className="block text-slate-500">เวลารักษารวม</span>{latestLog.prescription.therapyTimeMinutes} นาที</p>
+            <p><span className="block text-slate-500">ปริมาตรเติม</span>{latestLog.prescription.fillVolumeMl} ml</p>
+            <p><span className="block text-slate-500">จำนวนรอบ</span>{latestLog.prescription.cycles}</p>
+            <p><span className="block text-slate-500">เวลาค้างน้ำยา</span>{latestLog.prescription.dwellTimeMinutes} นาที</p>
+            <p><span className="block text-slate-500">น้ำยาค้างสุดท้าย</span>{latestLog.prescription.lastFillMl ?? 0} ml</p>
           </div>
         </section>
       )}

@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 
 export const defaultPrescriptionValues = {
-  name: "Default prescription profile",
+  name: "โปรไฟล์น้ำยาเริ่มต้น",
   solutionBag1: "1.5% 5000 ml",
   solutionBag2: "2.5% 5000 ml",
   totalVolumeMl: 10000,
@@ -21,10 +21,16 @@ export async function ensureDefaultPrescription(userId: number) {
   });
 
   if (existing) {
-    if (existing.lastFillMl === null) {
+    if (existing.lastFillMl === null || existing.name === "Default prescription profile") {
       return prisma.aPDPrescription.update({
         where: { id: existing.id },
-        data: { lastFillMl: 0 },
+        data: {
+          lastFillMl: existing.lastFillMl ?? 0,
+          name:
+            existing.name === "Default prescription profile"
+              ? defaultPrescriptionValues.name
+              : existing.name,
+        },
       });
     }
 
@@ -44,7 +50,7 @@ export function formatDateInput(date: Date) {
 }
 
 export function formatDisplayDate(date: Date) {
-  return new Intl.DateTimeFormat("en-GB", {
+  return new Intl.DateTimeFormat("th-TH", {
     day: "2-digit",
     month: "short",
     year: "numeric",
@@ -76,4 +82,18 @@ export function toNumber(value: unknown) {
     return decimal.toNumber();
   }
   return Number(value ?? 0);
+}
+
+const drainageAppearanceLabels: Record<string, string> = {
+  Clear: "ใส",
+  "Light yellow": "เหลืองอ่อน",
+  Cloudy: "ขุ่น",
+  "Fibrin strands": "มีเส้นไฟบริน",
+  "Pink/blood-tinged": "ชมพู/มีเลือดปน",
+  "Other - see remark": "อื่น ๆ - ดูหมายเหตุ",
+};
+
+export function formatDrainageAppearance(value: string | null | undefined) {
+  if (!value) return "—";
+  return drainageAppearanceLabels[value] ?? value;
 }
