@@ -29,7 +29,7 @@ export default async function ApdLogsPage() {
           <p className="mt-2 text-sm text-slate-500">{logs.length} รายการ</p>
         </div>
         <Link
-          href="/apd-log-book/new"
+          href="/apd/new"
           className="w-fit rounded-lg bg-green-500 px-4 py-2.5 text-sm font-bold text-black hover:bg-green-400 transition-colors"
         >
           + บันทึกใหม่
@@ -40,7 +40,7 @@ export default async function ApdLogsPage() {
         <div className="rounded-xl border border-slate-800 bg-slate-900/30 px-6 py-14 text-center">
           <p className="text-sm text-slate-500">ยังไม่มีบันทึก APD</p>
           <Link
-            href="/apd-log-book/new"
+            href="/apd/new"
             className="mt-3 inline-block text-sm font-medium text-green-400 hover:text-green-300"
           >
             สร้างบันทึกแรก
@@ -88,7 +88,7 @@ export default async function ApdLogsPage() {
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
                       <Link
-                        href={`/apd-log-book/${log.id}/edit`}
+                        href={`/apd/${log.id}/edit`}
                         className="text-slate-300 hover:text-white transition-colors"
                       >
                         แก้ไข

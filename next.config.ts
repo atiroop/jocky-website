@@ -9,6 +9,20 @@ const nextConfig: NextConfig = {
       ? [{ protocol: "https", hostname: r2Hostname }]
       : [],
   },
+  async redirects() {
+    return [
+      {
+        source: "/apd-log-book",
+        destination: "/apd",
+        permanent: true,
+      },
+      {
+        source: "/apd-log-book/:path*",
+        destination: "/apd/:path*",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

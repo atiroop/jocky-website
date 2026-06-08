@@ -138,13 +138,13 @@ export async function createDailyLog(formData: FormData) {
       },
     });
   } catch (error) {
-    if (isUniqueError(error)) redirect("/apd-log-book/new?error=duplicate-date");
+    if (isUniqueError(error)) redirect("/apd/new?error=duplicate-date");
     throw error;
   }
 
-  revalidatePath("/apd-log-book");
-  revalidatePath("/apd-log-book/logs");
-  redirect("/apd-log-book");
+  revalidatePath("/apd");
+  revalidatePath("/apd/logs");
+  redirect("/apd");
 }
 
 export async function updateDailyLog(formData: FormData) {
@@ -155,7 +155,7 @@ export async function updateDailyLog(formData: FormData) {
     select: { id: true, prescriptionId: true },
   });
 
-  if (!existingLog) redirect("/apd-log-book/logs");
+  if (!existingLog) redirect("/apd/logs");
 
   const prescription = await savePrescription(
     session.userId,
@@ -173,14 +173,14 @@ export async function updateDailyLog(formData: FormData) {
     });
   } catch (error) {
     if (isUniqueError(error)) {
-      redirect(`/apd-log-book/${id}/edit?error=duplicate-date`);
+      redirect(`/apd/${id}/edit?error=duplicate-date`);
     }
     throw error;
   }
 
-  revalidatePath("/apd-log-book");
-  revalidatePath("/apd-log-book/logs");
-  redirect("/apd-log-book/logs");
+  revalidatePath("/apd");
+  revalidatePath("/apd/logs");
+  redirect("/apd/logs");
 }
 
 export async function deleteDailyLog(formData: FormData) {
@@ -191,7 +191,7 @@ export async function deleteDailyLog(formData: FormData) {
     select: { prescriptionId: true },
   });
 
-  if (!log) redirect("/apd-log-book/logs");
+  if (!log) redirect("/apd/logs");
 
   await prisma.aPDDailyLog.delete({ where: { id } });
 
@@ -209,7 +209,7 @@ export async function deleteDailyLog(formData: FormData) {
     }
   }
 
-  revalidatePath("/apd-log-book");
-  revalidatePath("/apd-log-book/logs");
-  redirect("/apd-log-book/logs");
+  revalidatePath("/apd");
+  revalidatePath("/apd/logs");
+  redirect("/apd/logs");
 }

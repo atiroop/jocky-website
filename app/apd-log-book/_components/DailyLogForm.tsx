@@ -353,7 +353,7 @@ export default function DailyLogForm({
           {isEditing ? "อัปเดตบันทึก" : "บันทึกข้อมูล"}
         </button>
         <Link
-          href={isEditing ? "/apd-log-book/logs" : "/apd-log-book"}
+          href={isEditing ? "/apd/logs" : "/apd"}
           className="rounded-lg border border-slate-700 px-5 py-2.5 text-sm font-medium text-slate-300 hover:border-slate-500 hover:text-white transition-colors"
         >
           ยกเลิก

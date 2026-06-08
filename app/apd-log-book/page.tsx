@@ -87,13 +87,13 @@ export default async function ApdLogBookPage({
         </div>
         <div className="flex flex-wrap gap-3">
           <Link
-            href="/apd-log-book/new"
+            href="/apd/new"
             className="rounded-lg bg-green-500 px-4 py-2.5 text-sm font-bold text-black hover:bg-green-400 transition-colors"
           >
             + บันทึกใหม่
           </Link>
           <Link
-            href="/apd-log-book/logs"
+            href="/apd/logs"
             className="rounded-lg border border-slate-700 px-4 py-2.5 text-sm font-medium text-slate-300 hover:border-slate-500 hover:text-white transition-colors"
           >
             ดูรายการย้อนหลัง
@@ -135,7 +135,7 @@ export default async function ApdLogBookPage({
           {[7, 30].map((range) => (
             <Link
               key={range}
-              href={`/apd-log-book?days=${range}`}
+              href={`/apd?days=${range}`}
               className={`rounded-md px-3 py-1.5 text-sm transition-colors ${
                 days === range
                   ? "bg-slate-800 text-white"

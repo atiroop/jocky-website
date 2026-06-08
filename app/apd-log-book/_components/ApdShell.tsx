@@ -3,9 +3,9 @@ import { getAdminSession } from "@/lib/admin-auth";
 import { redirect } from "next/navigation";
 
 const navItems = [
-  { href: "/apd-log-book", label: "ภาพรวม" },
-  { href: "/apd-log-book/new", label: "บันทึกใหม่" },
-  { href: "/apd-log-book/logs", label: "รายการบันทึก" },
+  { href: "/apd", label: "ภาพรวม" },
+  { href: "/apd/new", label: "บันทึกใหม่" },
+  { href: "/apd/logs", label: "รายการบันทึก" },
 ];
 
 export default async function ApdShell({ children }: { children: React.ReactNode }) {
@@ -16,7 +16,7 @@ export default async function ApdShell({ children }: { children: React.ReactNode
     <div className="min-h-screen bg-[#0B1220] text-slate-100">
       <header className="sticky top-0 z-30 border-b border-slate-800/80 bg-[#0B1220]/90 backdrop-blur-md">
         <div className="max-w-6xl mx-auto px-5 md:px-8 h-14 flex items-center justify-between gap-4">
-          <Link href="/apd-log-book" className="flex items-center gap-1 group shrink-0">
+          <Link href="/apd" className="flex items-center gap-1 group shrink-0">
             <span className="text-slate-600 font-mono group-hover:text-green-400 transition-colors">{"<"}</span>
             <span className="text-white font-semibold text-sm tracking-tight">สมุดบันทึก APD</span>
             <span className="text-slate-600 font-mono group-hover:text-green-400 transition-colors">{"/>"}</span>
