@@ -13,20 +13,23 @@ export default async function ApdShell({ children }: { children: React.ReactNode
   if (!session) redirect("/admin/login");
 
   return (
-    <div className="min-h-screen bg-[linear-gradient(135deg,#EEF3FF_0%,#F6F8FF_48%,#F4EDFF_100%)] text-[#111827]">
-      <header className="sticky top-0 z-30 border-b border-[#E5EAF5]/90 bg-white/80 shadow-[0_8px_30px_rgba(31,41,55,0.06)] backdrop-blur-xl">
+    <div className="min-h-screen bg-[linear-gradient(135deg,#FDE6F3_0%,#ECE3FF_45%,#FFEDD9_100%)] text-[#18122B]">
+      <header className="sticky top-0 z-30 border-b-[3px] border-[#18122B] bg-[linear-gradient(90deg,#6D28D9_0%,#DB2777_55%,#EA580C_100%)] shadow-[0_6px_0_0_rgba(24,18,43,0.15)]">
         <div className="max-w-7xl mx-auto px-5 md:px-8 h-16 flex items-center justify-between gap-4">
-          <Link href="/apd" className="flex items-center gap-1 group shrink-0">
-            <span className="text-[#8B5CF6] font-mono group-hover:text-[#2F6BFF] transition-colors">{"<"}</span>
-            <span className="text-[#111827] font-semibold text-sm tracking-tight">สมุดบันทึก APD</span>
-            <span className="text-[#8B5CF6] font-mono group-hover:text-[#2F6BFF] transition-colors">{"/>"}</span>
+          <Link href="/apd" className="flex items-center gap-2 group shrink-0">
+            <span className="flex h-8 w-8 items-center justify-center rounded-xl border-[3px] border-[#18122B] bg-[#FDE047] text-sm font-black text-[#18122B] shadow-[3px_3px_0_0_#18122B] group-hover:-translate-y-0.5 transition-transform">
+              A
+            </span>
+            <span className="text-white font-black text-sm tracking-tight drop-shadow-[0_1px_0_rgba(0,0,0,0.25)]">
+              สมุดบันทึก APD
+            </span>
           </Link>
           <nav className="hidden md:flex items-center gap-1">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="rounded-full px-4 py-2 text-sm font-medium text-[#6B7280] hover:bg-[#EEF3FF] hover:text-[#2F6BFF] transition-colors"
+                className="rounded-full px-4 py-2 text-sm font-bold text-white/90 hover:bg-white hover:text-[#DB2777] transition-colors"
               >
                 {item.label}
               </Link>
@@ -34,7 +37,7 @@ export default async function ApdShell({ children }: { children: React.ReactNode
           </nav>
           <Link
             href="/admin"
-            className="rounded-full bg-[#F8FAFF] px-3 py-1.5 text-xs font-medium text-[#6B7280] ring-1 ring-[#E5EAF5] hover:text-[#2F6BFF] transition-colors truncate max-w-[11rem]"
+            className="rounded-full border-[3px] border-[#18122B] bg-white px-3 py-1.5 text-xs font-bold text-[#18122B] shadow-[3px_3px_0_0_#18122B] hover:bg-[#FDE047] transition-colors truncate max-w-[11rem]"
           >
             {session.email}
           </Link>
@@ -44,7 +47,7 @@ export default async function ApdShell({ children }: { children: React.ReactNode
             <Link
               key={item.href}
               href={item.href}
-              className="rounded-full border border-[#D8E0F0] bg-white/70 px-3 py-1.5 text-xs font-medium text-[#6B7280] whitespace-nowrap"
+              className="rounded-full border-[2px] border-white/60 bg-white/10 px-3 py-1.5 text-xs font-bold text-white whitespace-nowrap"
             >
               {item.label}
             </Link>

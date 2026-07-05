@@ -48,18 +48,18 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="block text-sm font-semibold text-[#374151] mb-1.5">{label}</span>
+      <span className="block text-sm font-black text-[#18122B] mb-1.5">{label}</span>
       {children}
     </label>
   );
 }
 
 const inputClass =
-  "w-full rounded-2xl bg-white border border-[#DDE5F3] text-[#111827] px-4 py-3 text-sm shadow-[0_8px_24px_rgba(31,41,55,0.04)] focus:outline-none focus:ring-4 focus:ring-[#2F6BFF]/15 focus:border-[#2F6BFF]";
+  "w-full rounded-2xl bg-white border-[2px] border-[#18122B]/15 text-[#18122B] px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-4 focus:ring-[#EC4899]/20 focus:border-[#EC4899]";
 
 const textareaClass = `${inputClass} resize-none`;
 const panelClass =
-  "rounded-[24px] border border-[#E5EAF5] bg-white/95 p-5 shadow-[0_18px_45px_rgba(31,41,55,0.08)] md:p-6";
+  "rounded-2xl border-[3px] border-[#18122B] bg-white p-5 shadow-[5px_5px_0_0_#18122B] md:p-6";
 
 const drainageAppearanceOptions = [
   { value: "ใส", label: "ใส" },
@@ -87,7 +87,7 @@ export default function DailyLogForm({
       {log?.id && <input type="hidden" name="id" value={log.id} />}
 
       {error === "duplicate-date" && (
-        <p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+        <p className="rounded-2xl border-[3px] border-[#18122B] bg-[#FFF1F2] px-4 py-3 text-sm font-black text-[#E11D48] shadow-[4px_4px_0_0_#18122B]">
           มีบันทึกของวันที่นี้อยู่แล้ว
         </p>
       )}
@@ -95,8 +95,8 @@ export default function DailyLogForm({
       <section className={panelClass}>
         <div className="mb-5 flex items-center justify-between gap-4">
           <div>
-            <h2 className="text-lg font-bold tracking-tight text-[#111827]">ข้อมูลประจำวัน</h2>
-            <p className="mt-1 text-xs font-medium text-[#6B7280]">
+            <h2 className="text-lg font-black tracking-tight text-[#18122B]">ข้อมูลประจำวัน</h2>
+            <p className="mt-1 text-xs font-bold text-[#18122B]/50">
               หากค่าต่างจากรูปแบบปกติของคุณ ควรสังเกต และควรปรึกษาทีมไต
             </p>
           </div>
@@ -234,13 +234,13 @@ export default function DailyLogForm({
 
       <section className={panelClass}>
         <div className="mb-5 flex items-center justify-between gap-4">
-          <h2 className="text-lg font-bold tracking-tight text-[#111827]">ใบสั่งการรักษา</h2>
-          <label className="inline-flex items-center gap-2 rounded-full bg-[#F6F8FF] px-3 py-2 text-sm font-medium text-[#374151] ring-1 ring-[#E5EAF5]">
+          <h2 className="text-lg font-black tracking-tight text-[#18122B]">ใบสั่งการรักษา</h2>
+          <label className="inline-flex items-center gap-2 rounded-full border-[2px] border-[#18122B] bg-[#EDE9FE] px-3 py-2 text-sm font-bold text-[#18122B]">
             <input
               type="checkbox"
               name="isDefaultProfile"
               defaultChecked={prescription.isDefaultProfile}
-              className="h-4 w-4 rounded border-[#DDE5F3] bg-white text-[#2F6BFF]"
+              className="h-4 w-4 rounded border-[#18122B] bg-white text-[#7C3AED]"
             />
             ใช้เป็นโปรไฟล์เริ่มต้น
           </label>
@@ -350,13 +350,13 @@ export default function DailyLogForm({
       <div className="flex flex-wrap items-center gap-3">
         <button
           type="submit"
-          className="rounded-2xl bg-[#2F6BFF] px-5 py-3 text-sm font-bold text-white shadow-[0_14px_30px_rgba(47,107,255,0.28)] hover:bg-[#1D4ED8] transition-colors"
+          className="rounded-2xl border-[3px] border-[#18122B] bg-[linear-gradient(90deg,#EC4899_0%,#F97316_100%)] px-5 py-3 text-sm font-black uppercase tracking-wide text-white shadow-[4px_4px_0_0_#18122B] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_#18122B] transition-all"
         >
           {isEditing ? "อัปเดตบันทึก" : "บันทึกข้อมูล"}
         </button>
         <Link
           href={isEditing ? "/apd/logs" : "/apd"}
-          className="rounded-2xl border border-[#DDE5F3] bg-white px-5 py-3 text-sm font-semibold text-[#2F6BFF] shadow-[0_8px_24px_rgba(31,41,55,0.05)] hover:border-[#BFD0FF] hover:bg-[#F6F8FF] transition-colors"
+          className="rounded-2xl border-[3px] border-[#18122B] bg-white px-5 py-3 text-sm font-black text-[#7C3AED] shadow-[4px_4px_0_0_#18122B] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_#18122B] transition-all"
         >
           ยกเลิก
         </Link>
@@ -364,7 +364,7 @@ export default function DailyLogForm({
           <button
             type="submit"
             formAction={deleteDailyLog}
-            className="rounded-2xl border border-red-200 bg-white px-5 py-3 text-sm font-semibold text-red-600 hover:bg-red-50 transition-colors"
+            className="rounded-2xl border-[3px] border-[#18122B] bg-white px-5 py-3 text-sm font-black text-[#E11D48] shadow-[4px_4px_0_0_#18122B] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_#18122B] transition-all"
           >
             ลบ
           </button>

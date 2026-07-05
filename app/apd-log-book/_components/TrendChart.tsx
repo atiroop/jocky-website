@@ -47,12 +47,12 @@ export default function TrendChart({
 
   if (values.length === 0) {
     return (
-      <div className="rounded-[24px] border border-[#E5EAF5] bg-white/95 p-5 shadow-[0_18px_45px_rgba(31,41,55,0.08)]">
+      <div className="rounded-2xl border-[3px] border-[#18122B] bg-white p-5 shadow-[5px_5px_0_0_#18122B]">
         <div className="flex items-center justify-between gap-3 mb-4">
-          <h3 className="font-bold text-[#111827]">{title}</h3>
-          <span className="text-xs font-semibold text-[#6B7280]">{unit}</span>
+          <h3 className="font-black text-[#18122B]">{title}</h3>
+          <span className="text-xs font-bold text-[#18122B]/50">{unit}</span>
         </div>
-        <div className="h-44 rounded-2xl border border-dashed border-[#D8E0F0] bg-[#F8FAFF] grid place-items-center text-sm font-medium text-[#6B7280]">
+        <div className="h-44 rounded-2xl border-[2px] border-dashed border-[#18122B]/25 bg-[#FDF2F8] grid place-items-center text-sm font-bold text-[#18122B]/50">
           ยังไม่มีข้อมูลกราฟ
         </div>
       </div>
@@ -72,33 +72,33 @@ export default function TrendChart({
   );
 
   return (
-    <div className="rounded-[24px] border border-[#E5EAF5] bg-white/95 p-5 shadow-[0_18px_45px_rgba(31,41,55,0.08)]">
+    <div className="rounded-2xl border-[3px] border-[#18122B] bg-white p-5 shadow-[5px_5px_0_0_#18122B]">
       <div className="flex items-center justify-between gap-3 mb-4">
         <div>
-          <h3 className="font-bold text-[#111827]">{title}</h3>
+          <h3 className="font-black text-[#18122B]">{title}</h3>
           {secondLabel && (
-            <p className="mt-1 text-xs font-semibold text-[#6B7280]">
-              <span className="text-[#2F6BFF]">{primaryLabel}</span>
-              <span className="mx-2 text-[#CBD5E1]">/</span>
-              <span className="text-[#8B5CF6]">{secondLabel}</span>
+            <p className="mt-1 text-xs font-bold text-[#18122B]/50">
+              <span className="text-[#EC4899]">{primaryLabel}</span>
+              <span className="mx-2 text-[#18122B]/25">/</span>
+              <span className="text-[#06B6D4]">{secondLabel}</span>
             </p>
           )}
         </div>
-        <span className="text-xs font-semibold text-[#6B7280]">{unit}</span>
+        <span className="text-xs font-bold text-[#18122B]/50">{unit}</span>
       </div>
 
-      <div className="overflow-hidden rounded-2xl border border-[#E5EAF5] bg-[#F8FAFF]">
+      <div className="overflow-hidden rounded-2xl border-[2px] border-[#18122B]/15 bg-[#FDF2F8]">
         <svg viewBox="0 0 640 210" role="img" aria-label={title} className="h-56 w-full">
-          <line x1="18" y1="18" x2="18" y2="180" stroke="#D8E0F0" />
-          <line x1="18" y1="180" x2="622" y2="180" stroke="#D8E0F0" />
-          <line x1="18" y1="72" x2="622" y2="72" stroke="#E5EAF5" strokeDasharray="4 6" />
-          <line x1="18" y1="126" x2="622" y2="126" stroke="#E5EAF5" strokeDasharray="4 6" />
+          <line x1="18" y1="18" x2="18" y2="180" stroke="#18122B" strokeOpacity="0.2" />
+          <line x1="18" y1="180" x2="622" y2="180" stroke="#18122B" strokeOpacity="0.2" />
+          <line x1="18" y1="72" x2="622" y2="72" stroke="#18122B" strokeOpacity="0.1" strokeDasharray="4 6" />
+          <line x1="18" y1="126" x2="622" y2="126" stroke="#18122B" strokeOpacity="0.1" strokeDasharray="4 6" />
           {secondaryPath && (
             <polyline
               points={secondaryPath}
               fill="none"
-              stroke="#8B5CF6"
-              strokeWidth="3"
+              stroke="#06B6D4"
+              strokeWidth="3.5"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
@@ -106,23 +106,23 @@ export default function TrendChart({
           <polyline
             points={primaryPath}
             fill="none"
-            stroke="#2F6BFF"
-            strokeWidth="3"
+            stroke="#EC4899"
+            strokeWidth="3.5"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
-          <text x="24" y="30" fill="#6B7280" fontSize="11" fontWeight="600">
+          <text x="24" y="30" fill="#18122B" fillOpacity="0.6" fontSize="11" fontWeight="700">
             {Math.round(max)}
           </text>
-          <text x="24" y="174" fill="#6B7280" fontSize="11" fontWeight="600">
+          <text x="24" y="174" fill="#18122B" fillOpacity="0.6" fontSize="11" fontWeight="700">
             {Math.round(min)}
           </text>
           {points.length > 0 && (
             <>
-              <text x="18" y="202" fill="#6B7280" fontSize="11" fontWeight="600">
+              <text x="18" y="202" fill="#18122B" fillOpacity="0.6" fontSize="11" fontWeight="700">
                 {points[0].label}
               </text>
-              <text x="622" y="202" fill="#6B7280" fontSize="11" fontWeight="600" textAnchor="end">
+              <text x="622" y="202" fill="#18122B" fillOpacity="0.6" fontSize="11" fontWeight="700" textAnchor="end">
                 {points[points.length - 1].label}
               </text>
             </>

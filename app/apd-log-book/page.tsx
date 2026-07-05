@@ -15,20 +15,34 @@ import {
 
 export const dynamic = "force-dynamic";
 
+const statAccents = [
+  { bg: "#FCE7F3", border: "#F472B6" },
+  { bg: "#EDE9FE", border: "#A78BFA" },
+  { bg: "#CFFAFE", border: "#22D3EE" },
+  { bg: "#ECFCCB", border: "#A3E635" },
+  { bg: "#FFEDD5", border: "#FB923C" },
+];
+
 function StatCard({
   label,
   value,
   detail,
+  accent = 0,
 }: {
   label: string;
   value: string;
   detail?: string;
+  accent?: number;
 }) {
+  const { bg, border } = statAccents[accent % statAccents.length];
   return (
-    <div className="rounded-[22px] border border-[#E5EAF5] bg-white/95 px-5 py-4 shadow-[0_18px_45px_rgba(31,41,55,0.08)]">
-      <p className="text-xs font-bold uppercase tracking-widest text-[#6B7280]">{label}</p>
-      <p className="mt-3 text-3xl font-bold tracking-tight text-[#111827]">{value}</p>
-      {detail && <p className="mt-1 text-xs font-medium text-[#6B7280]">{detail}</p>}
+    <div
+      className="rounded-2xl border-[3px] px-5 py-4 shadow-[5px_5px_0_0_#18122B]"
+      style={{ backgroundColor: bg, borderColor: border }}
+    >
+      <p className="text-xs font-black uppercase tracking-widest text-[#18122B]/70">{label}</p>
+      <p className="mt-3 text-3xl font-black tracking-tight text-[#18122B]">{value}</p>
+      {detail && <p className="mt-1 text-xs font-bold text-[#18122B]/60">{detail}</p>}
     </div>
   );
 }
@@ -75,26 +89,26 @@ export default async function ApdLogBookPage({
     <ApdShell>
       <div className="mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-5">
         <div>
-          <p className="text-[#2F6BFF] text-xs font-bold tracking-[0.18em] mb-3">
+          <p className="text-[#DB2777] text-xs font-black tracking-[0.18em] mb-3">
             {"// บันทึก APD ส่วนตัว"}
           </p>
-          <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[#111827]">
+          <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[#18122B]">
             สมุดบันทึก APD
           </h1>
-          <p className="mt-2 text-sm font-medium text-[#6B7280]">
+          <p className="mt-2 text-sm font-bold text-[#18122B]/60">
             บันทึกข้อมูลล้างไตทางช่องท้องและติดตามแนวโน้มประจำวัน
           </p>
         </div>
         <div className="flex flex-wrap gap-3">
           <Link
             href="/apd/new"
-            className="rounded-2xl bg-[#2F6BFF] px-5 py-3 text-sm font-bold text-white shadow-[0_14px_30px_rgba(47,107,255,0.28)] hover:bg-[#1D4ED8] transition-colors"
+            className="rounded-2xl border-[3px] border-[#18122B] bg-[linear-gradient(90deg,#EC4899_0%,#F97316_100%)] px-5 py-3 text-sm font-black uppercase tracking-wide text-white shadow-[4px_4px_0_0_#18122B] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_#18122B] transition-all"
           >
             + บันทึกใหม่
           </Link>
           <Link
             href="/apd/logs"
-            className="rounded-2xl border border-[#DDE5F3] bg-white px-5 py-3 text-sm font-semibold text-[#2F6BFF] shadow-[0_8px_24px_rgba(31,41,55,0.05)] hover:border-[#BFD0FF] hover:bg-[#F6F8FF] transition-colors"
+            className="rounded-2xl border-[3px] border-[#18122B] bg-white px-5 py-3 text-sm font-black text-[#7C3AED] shadow-[4px_4px_0_0_#18122B] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_#18122B] transition-all"
           >
             ดูรายการย้อนหลัง
           </Link>
@@ -103,26 +117,31 @@ export default async function ApdLogBookPage({
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
         <StatCard
+          accent={0}
           label="Total UF ล่าสุด"
           value={formatNumber(latestLog?.totalUfMl, " ml")}
           detail={latestLog ? formatDisplayDate(latestLog.date) : undefined}
         />
         <StatCard
+          accent={1}
           label="น้ำหนักล่าสุด"
           value={latestLog ? formatNumber(toNumber(latestLog.weightKg), " kg") : "—"}
           detail={latestLog ? formatDisplayDate(latestLog.date) : undefined}
         />
         <StatCard
+          accent={2}
           label="ความดันล่าสุด"
           value={latestLog ? `${latestLog.systolicBp}/${latestLog.diastolicBp}` : "—"}
           detail={latestLog ? `ชีพจร ${latestLog.pulse}` : undefined}
         />
         <StatCard
+          accent={3}
           label="ค่าเฉลี่ย Total UF 7 วัน"
           value={formatNumber(sevenDayUf, " ml")}
           detail={`${sevenDayLogs.length} รายการ`}
         />
         <StatCard
+          accent={4}
           label="ค่าเฉลี่ยน้ำหนัก 7 วัน"
           value={formatNumber(sevenDayWeight, " kg")}
           detail={`${sevenDayLogs.length} รายการ`}
@@ -130,16 +149,16 @@ export default async function ApdLogBookPage({
       </div>
 
       <div className="mb-6 flex items-center justify-between gap-4">
-        <h2 className="text-xl font-bold tracking-tight text-[#111827]">แนวโน้ม</h2>
-        <div className="flex rounded-full border border-[#E5EAF5] bg-white/80 p-1 shadow-[0_8px_24px_rgba(31,41,55,0.05)]">
+        <h2 className="text-xl font-black tracking-tight text-[#18122B]">แนวโน้ม</h2>
+        <div className="flex rounded-full border-[3px] border-[#18122B] bg-white p-1 shadow-[3px_3px_0_0_#18122B]">
           {[7, 30].map((range) => (
             <Link
               key={range}
               href={`/apd?days=${range}`}
-              className={`rounded-md px-3 py-1.5 text-sm transition-colors ${
+              className={`rounded-full px-3 py-1.5 text-sm font-bold transition-colors ${
                 days === range
-                  ? "bg-[#2F6BFF] text-white shadow-[0_8px_18px_rgba(47,107,255,0.22)]"
-                  : "text-[#6B7280] hover:text-[#2F6BFF]"
+                  ? "bg-[#7C3AED] text-white"
+                  : "text-[#18122B]/60 hover:text-[#7C3AED]"
               }`}
             >
               {range} วัน
@@ -179,24 +198,24 @@ export default async function ApdLogBookPage({
       </div>
 
       {latestLog?.prescription && (
-        <section className="rounded-[24px] border border-[#E5EAF5] bg-white/95 p-5 shadow-[0_18px_45px_rgba(31,41,55,0.08)]">
+        <section className="rounded-2xl border-[3px] border-[#18122B] bg-white p-5 shadow-[5px_5px_0_0_#18122B]">
           <div className="mb-4 flex items-center justify-between gap-4">
-            <h2 className="text-lg font-bold tracking-tight text-[#111827]">ใบสั่งการรักษาล่าสุด</h2>
+            <h2 className="text-lg font-black tracking-tight text-[#18122B]">ใบสั่งการรักษาล่าสุด</h2>
             {latestLog.prescription.isDefaultProfile && (
-              <span className="rounded-full bg-[#EDE9FE] px-3 py-1 text-xs font-bold text-[#7C3AED]">
+              <span className="rounded-full border-[2px] border-[#18122B] bg-[#FDE047] px-3 py-1 text-xs font-black text-[#18122B]">
                 โปรไฟล์เริ่มต้น
               </span>
             )}
           </div>
-          <div className="grid grid-cols-2 gap-4 text-sm text-[#111827] md:grid-cols-4">
-            <p><span className="block text-xs font-semibold text-[#6B7280]">น้ำยาถุงที่ 1</span>{latestLog.prescription.solutionBag1}</p>
-            <p><span className="block text-xs font-semibold text-[#6B7280]">น้ำยาถุงที่ 2</span>{latestLog.prescription.solutionBag2}</p>
-            <p><span className="block text-xs font-semibold text-[#6B7280]">ปริมาตรรวม</span>{latestLog.prescription.totalVolumeMl} ml</p>
-            <p><span className="block text-xs font-semibold text-[#6B7280]">เวลารักษารวม</span>{latestLog.prescription.therapyTimeMinutes} นาที</p>
-            <p><span className="block text-xs font-semibold text-[#6B7280]">ปริมาตรเติม</span>{latestLog.prescription.fillVolumeMl} ml</p>
-            <p><span className="block text-xs font-semibold text-[#6B7280]">จำนวนรอบ</span>{latestLog.prescription.cycles}</p>
-            <p><span className="block text-xs font-semibold text-[#6B7280]">เวลาค้างน้ำยา</span>{latestLog.prescription.dwellTimeMinutes} นาที</p>
-            <p><span className="block text-xs font-semibold text-[#6B7280]">น้ำยาค้างสุดท้าย</span>{latestLog.prescription.lastFillMl ?? 0} ml</p>
+          <div className="grid grid-cols-2 gap-4 text-sm text-[#18122B] md:grid-cols-4">
+            <p><span className="block text-xs font-bold text-[#18122B]/50">น้ำยาถุงที่ 1</span>{latestLog.prescription.solutionBag1}</p>
+            <p><span className="block text-xs font-bold text-[#18122B]/50">น้ำยาถุงที่ 2</span>{latestLog.prescription.solutionBag2}</p>
+            <p><span className="block text-xs font-bold text-[#18122B]/50">ปริมาตรรวม</span>{latestLog.prescription.totalVolumeMl} ml</p>
+            <p><span className="block text-xs font-bold text-[#18122B]/50">เวลารักษารวม</span>{latestLog.prescription.therapyTimeMinutes} นาที</p>
+            <p><span className="block text-xs font-bold text-[#18122B]/50">ปริมาตรเติม</span>{latestLog.prescription.fillVolumeMl} ml</p>
+            <p><span className="block text-xs font-bold text-[#18122B]/50">จำนวนรอบ</span>{latestLog.prescription.cycles}</p>
+            <p><span className="block text-xs font-bold text-[#18122B]/50">เวลาค้างน้ำยา</span>{latestLog.prescription.dwellTimeMinutes} นาที</p>
+            <p><span className="block text-xs font-bold text-[#18122B]/50">น้ำยาค้างสุดท้าย</span>{latestLog.prescription.lastFillMl ?? 0} ml</p>
           </div>
         </section>
       )}
