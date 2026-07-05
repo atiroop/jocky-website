@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 const navItems = [
   { href: "/admin/posts", label: "Posts", icon: "📝" },
   { href: "/apd", label: "สมุดบันทึก APD", icon: "📋" },
+  { href: "/admin/account", label: "บัญชีผู้ดูแล", icon: "🔐" },
 ];
 
 export default function SidebarNav({ email }: { email: string }) {
