@@ -148,22 +148,38 @@ export default async function ApdLogBookPage({
         />
       </div>
 
-      <div className="mb-6 flex items-center justify-between gap-4">
+      <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <h2 className="text-xl font-black tracking-tight text-[#18122B]">แนวโน้ม</h2>
-        <div className="flex rounded-full border-[3px] border-[#18122B] bg-white p-1 shadow-[3px_3px_0_0_#18122B]">
-          {[7, 30].map((range) => (
-            <Link
-              key={range}
-              href={`/apd?days=${range}`}
-              className={`rounded-full px-3 py-1.5 text-sm font-bold transition-colors ${
-                days === range
-                  ? "bg-[#7C3AED] text-white"
-                  : "text-[#18122B]/60 hover:text-[#7C3AED]"
-              }`}
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="flex rounded-full border-[3px] border-[#18122B] bg-white p-1 shadow-[3px_3px_0_0_#18122B]">
+            {[7, 30].map((range) => (
+              <Link
+                key={range}
+                href={`/apd?days=${range}`}
+                className={`rounded-full px-3 py-1.5 text-sm font-bold transition-colors ${
+                  days === range
+                    ? "bg-[#7C3AED] text-white"
+                    : "text-[#18122B]/60 hover:text-[#7C3AED]"
+                }`}
+              >
+                {range} วัน
+              </Link>
+            ))}
+          </div>
+          <div className="flex items-center gap-2">
+            <a
+              href={`/api/apd/export?format=xlsx&days=${days}`}
+              className="rounded-full border-[3px] border-[#18122B] bg-[#A3E635] px-4 py-2 text-xs font-black uppercase tracking-wide text-[#18122B] shadow-[3px_3px_0_0_#18122B] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0_0_#18122B] transition-all"
             >
-              {range} วัน
-            </Link>
-          ))}
+              Export Excel
+            </a>
+            <a
+              href={`/api/apd/export?format=pdf&days=${days}`}
+              className="rounded-full border-[3px] border-[#18122B] bg-[#22D3EE] px-4 py-2 text-xs font-black uppercase tracking-wide text-[#18122B] shadow-[3px_3px_0_0_#18122B] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0_0_#18122B] transition-all"
+            >
+              Export PDF
+            </a>
+          </div>
         </div>
       </div>
 
