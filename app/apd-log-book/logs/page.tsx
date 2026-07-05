@@ -22,34 +22,34 @@ export default async function ApdLogsPage() {
     <ApdShell>
       <div className="mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-5">
         <div>
-          <p className="text-green-400 text-xs font-mono tracking-widest mb-3">
+          <p className="text-[#2F6BFF] text-xs font-bold tracking-[0.18em] mb-3">
             {"// รายการย้อนหลัง"}
           </p>
-          <h1 className="text-3xl font-bold tracking-tight text-white">รายการบันทึก APD</h1>
-          <p className="mt-2 text-sm text-slate-500">{logs.length} รายการ</p>
+          <h1 className="text-3xl font-black tracking-tight text-[#111827]">รายการบันทึก APD</h1>
+          <p className="mt-2 text-sm font-medium text-[#6B7280]">{logs.length} รายการ</p>
         </div>
         <Link
           href="/apd/new"
-          className="w-fit rounded-lg bg-green-500 px-4 py-2.5 text-sm font-bold text-black hover:bg-green-400 transition-colors"
+          className="w-fit rounded-2xl bg-[#2F6BFF] px-5 py-3 text-sm font-bold text-white shadow-[0_14px_30px_rgba(47,107,255,0.28)] hover:bg-[#1D4ED8] transition-colors"
         >
           + บันทึกใหม่
         </Link>
       </div>
 
       {logs.length === 0 ? (
-        <div className="rounded-xl border border-slate-800 bg-slate-900/30 px-6 py-14 text-center">
-          <p className="text-sm text-slate-500">ยังไม่มีบันทึก APD</p>
+        <div className="rounded-[24px] border border-[#E5EAF5] bg-white/95 px-6 py-14 text-center shadow-[0_18px_45px_rgba(31,41,55,0.08)]">
+          <p className="text-sm font-medium text-[#6B7280]">ยังไม่มีบันทึก APD</p>
           <Link
             href="/apd/new"
-            className="mt-3 inline-block text-sm font-medium text-green-400 hover:text-green-300"
+            className="mt-3 inline-block text-sm font-bold text-[#2F6BFF] hover:text-[#1D4ED8]"
           >
             สร้างบันทึกแรก
           </Link>
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-slate-800">
+        <div className="overflow-x-auto rounded-[24px] border border-[#E5EAF5] bg-white/95 shadow-[0_18px_45px_rgba(31,41,55,0.08)]">
           <table className="w-full min-w-[1080px] text-sm">
-            <thead className="bg-slate-900 text-left text-xs uppercase tracking-widest text-slate-500">
+            <thead className="bg-[#F8FAFF] text-left text-xs uppercase tracking-widest text-[#6B7280]">
               <tr>
                 <th className="px-4 py-3 font-medium">วันที่</th>
                 <th className="px-4 py-3 font-medium">เริ่ม</th>
@@ -67,29 +67,29 @@ export default async function ApdLogsPage() {
             </thead>
             <tbody>
               {logs.map((log) => (
-                <tr key={log.id} className="border-t border-slate-800 hover:bg-slate-900/50">
-                  <td className="px-4 py-3 font-medium text-white">
+                <tr key={log.id} className="border-t border-[#E5EAF5] hover:bg-[#F6F8FF]">
+                  <td className="px-4 py-3 font-semibold text-[#111827]">
                     {formatDisplayDate(log.date)}
                   </td>
-                  <td className="px-4 py-3 text-slate-400">{log.treatmentStartTime}</td>
-                  <td className="px-4 py-3 text-slate-300">{toNumber(log.weightKg)} kg</td>
-                  <td className="px-4 py-3 text-slate-300">{log.systolicBp}/{log.diastolicBp}</td>
-                  <td className="px-4 py-3 text-slate-400">{log.pulse}</td>
-                  <td className="px-4 py-3 text-slate-400">{log.bloodGlucoseMgDl ?? "—"}</td>
-                  <td className="px-4 py-3 text-slate-400">{log.iDrainVolumeMl} ml</td>
-                  <td className="px-4 py-3 text-slate-300">{log.totalUfMl} ml</td>
-                  <td className="px-4 py-3 text-slate-400">{log.urineAvgDayMl} ml</td>
-                  <td className="px-4 py-3 text-slate-400">
+                  <td className="px-4 py-3 text-[#6B7280]">{log.treatmentStartTime}</td>
+                  <td className="px-4 py-3 font-medium text-[#111827]">{toNumber(log.weightKg)} kg</td>
+                  <td className="px-4 py-3 font-medium text-[#111827]">{log.systolicBp}/{log.diastolicBp}</td>
+                  <td className="px-4 py-3 text-[#6B7280]">{log.pulse}</td>
+                  <td className="px-4 py-3 text-[#6B7280]">{log.bloodGlucoseMgDl ?? "—"}</td>
+                  <td className="px-4 py-3 text-[#6B7280]">{log.iDrainVolumeMl} ml</td>
+                  <td className="px-4 py-3 font-medium text-[#111827]">{log.totalUfMl} ml</td>
+                  <td className="px-4 py-3 text-[#6B7280]">{log.urineAvgDayMl} ml</td>
+                  <td className="px-4 py-3 text-[#6B7280]">
                     {formatDrainageAppearance(log.drainageAppearance)}
                   </td>
-                  <td className="px-4 py-3 text-slate-400 max-w-[12rem] truncate">
+                  <td className="px-4 py-3 text-[#6B7280] max-w-[12rem] truncate">
                     {log.prescription?.name ?? "—"}
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
                       <Link
                         href={`/apd/${log.id}/edit`}
-                        className="text-slate-300 hover:text-white transition-colors"
+                        className="font-semibold text-[#2F6BFF] hover:text-[#1D4ED8] transition-colors"
                       >
                         แก้ไข
                       </Link>
@@ -97,7 +97,7 @@ export default async function ApdLogsPage() {
                         <input type="hidden" name="id" value={log.id} />
                         <button
                           type="submit"
-                          className="text-red-300 hover:text-red-200 transition-colors"
+                          className="font-semibold text-red-500 hover:text-red-700 transition-colors"
                         >
                           ลบ
                         </button>

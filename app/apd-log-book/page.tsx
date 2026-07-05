@@ -25,10 +25,10 @@ function StatCard({
   detail?: string;
 }) {
   return (
-    <div className="rounded-xl border border-slate-800 bg-slate-900/30 px-5 py-4">
-      <p className="text-xs font-medium uppercase tracking-widest text-slate-500">{label}</p>
-      <p className="mt-3 text-2xl font-semibold text-white">{value}</p>
-      {detail && <p className="mt-1 text-xs text-slate-600">{detail}</p>}
+    <div className="rounded-[22px] border border-[#E5EAF5] bg-white/95 px-5 py-4 shadow-[0_18px_45px_rgba(31,41,55,0.08)]">
+      <p className="text-xs font-bold uppercase tracking-widest text-[#6B7280]">{label}</p>
+      <p className="mt-3 text-3xl font-bold tracking-tight text-[#111827]">{value}</p>
+      {detail && <p className="mt-1 text-xs font-medium text-[#6B7280]">{detail}</p>}
     </div>
   );
 }
@@ -75,26 +75,26 @@ export default async function ApdLogBookPage({
     <ApdShell>
       <div className="mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-5">
         <div>
-          <p className="text-green-400 text-xs font-mono tracking-widest mb-3">
+          <p className="text-[#2F6BFF] text-xs font-bold tracking-[0.18em] mb-3">
             {"// บันทึก APD ส่วนตัว"}
           </p>
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-white">
+          <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[#111827]">
             สมุดบันทึก APD
           </h1>
-          <p className="mt-2 text-sm text-slate-500">
+          <p className="mt-2 text-sm font-medium text-[#6B7280]">
             บันทึกข้อมูลล้างไตทางช่องท้องและติดตามแนวโน้มประจำวัน
           </p>
         </div>
         <div className="flex flex-wrap gap-3">
           <Link
             href="/apd/new"
-            className="rounded-lg bg-green-500 px-4 py-2.5 text-sm font-bold text-black hover:bg-green-400 transition-colors"
+            className="rounded-2xl bg-[#2F6BFF] px-5 py-3 text-sm font-bold text-white shadow-[0_14px_30px_rgba(47,107,255,0.28)] hover:bg-[#1D4ED8] transition-colors"
           >
             + บันทึกใหม่
           </Link>
           <Link
             href="/apd/logs"
-            className="rounded-lg border border-slate-700 px-4 py-2.5 text-sm font-medium text-slate-300 hover:border-slate-500 hover:text-white transition-colors"
+            className="rounded-2xl border border-[#DDE5F3] bg-white px-5 py-3 text-sm font-semibold text-[#2F6BFF] shadow-[0_8px_24px_rgba(31,41,55,0.05)] hover:border-[#BFD0FF] hover:bg-[#F6F8FF] transition-colors"
           >
             ดูรายการย้อนหลัง
           </Link>
@@ -130,16 +130,16 @@ export default async function ApdLogBookPage({
       </div>
 
       <div className="mb-6 flex items-center justify-between gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-white">แนวโน้ม</h2>
-        <div className="flex rounded-lg border border-slate-800 bg-slate-900/40 p-1">
+        <h2 className="text-xl font-bold tracking-tight text-[#111827]">แนวโน้ม</h2>
+        <div className="flex rounded-full border border-[#E5EAF5] bg-white/80 p-1 shadow-[0_8px_24px_rgba(31,41,55,0.05)]">
           {[7, 30].map((range) => (
             <Link
               key={range}
               href={`/apd?days=${range}`}
               className={`rounded-md px-3 py-1.5 text-sm transition-colors ${
                 days === range
-                  ? "bg-slate-800 text-white"
-                  : "text-slate-500 hover:text-slate-300"
+                  ? "bg-[#2F6BFF] text-white shadow-[0_8px_18px_rgba(47,107,255,0.22)]"
+                  : "text-[#6B7280] hover:text-[#2F6BFF]"
               }`}
             >
               {range} วัน
@@ -179,24 +179,24 @@ export default async function ApdLogBookPage({
       </div>
 
       {latestLog?.prescription && (
-        <section className="rounded-xl border border-slate-800 bg-slate-900/30 p-5">
+        <section className="rounded-[24px] border border-[#E5EAF5] bg-white/95 p-5 shadow-[0_18px_45px_rgba(31,41,55,0.08)]">
           <div className="mb-4 flex items-center justify-between gap-4">
-            <h2 className="text-lg font-semibold tracking-tight text-white">ใบสั่งการรักษาล่าสุด</h2>
+            <h2 className="text-lg font-bold tracking-tight text-[#111827]">ใบสั่งการรักษาล่าสุด</h2>
             {latestLog.prescription.isDefaultProfile && (
-              <span className="rounded-full bg-green-500/10 px-3 py-1 text-xs font-medium text-green-400">
+              <span className="rounded-full bg-[#EDE9FE] px-3 py-1 text-xs font-bold text-[#7C3AED]">
                 โปรไฟล์เริ่มต้น
               </span>
             )}
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-            <p><span className="block text-slate-500">น้ำยาถุงที่ 1</span>{latestLog.prescription.solutionBag1}</p>
-            <p><span className="block text-slate-500">น้ำยาถุงที่ 2</span>{latestLog.prescription.solutionBag2}</p>
-            <p><span className="block text-slate-500">ปริมาตรรวม</span>{latestLog.prescription.totalVolumeMl} ml</p>
-            <p><span className="block text-slate-500">เวลารักษารวม</span>{latestLog.prescription.therapyTimeMinutes} นาที</p>
-            <p><span className="block text-slate-500">ปริมาตรเติม</span>{latestLog.prescription.fillVolumeMl} ml</p>
-            <p><span className="block text-slate-500">จำนวนรอบ</span>{latestLog.prescription.cycles}</p>
-            <p><span className="block text-slate-500">เวลาค้างน้ำยา</span>{latestLog.prescription.dwellTimeMinutes} นาที</p>
-            <p><span className="block text-slate-500">น้ำยาค้างสุดท้าย</span>{latestLog.prescription.lastFillMl ?? 0} ml</p>
+          <div className="grid grid-cols-2 gap-4 text-sm text-[#111827] md:grid-cols-4">
+            <p><span className="block text-xs font-semibold text-[#6B7280]">น้ำยาถุงที่ 1</span>{latestLog.prescription.solutionBag1}</p>
+            <p><span className="block text-xs font-semibold text-[#6B7280]">น้ำยาถุงที่ 2</span>{latestLog.prescription.solutionBag2}</p>
+            <p><span className="block text-xs font-semibold text-[#6B7280]">ปริมาตรรวม</span>{latestLog.prescription.totalVolumeMl} ml</p>
+            <p><span className="block text-xs font-semibold text-[#6B7280]">เวลารักษารวม</span>{latestLog.prescription.therapyTimeMinutes} นาที</p>
+            <p><span className="block text-xs font-semibold text-[#6B7280]">ปริมาตรเติม</span>{latestLog.prescription.fillVolumeMl} ml</p>
+            <p><span className="block text-xs font-semibold text-[#6B7280]">จำนวนรอบ</span>{latestLog.prescription.cycles}</p>
+            <p><span className="block text-xs font-semibold text-[#6B7280]">เวลาค้างน้ำยา</span>{latestLog.prescription.dwellTimeMinutes} นาที</p>
+            <p><span className="block text-xs font-semibold text-[#6B7280]">น้ำยาค้างสุดท้าย</span>{latestLog.prescription.lastFillMl ?? 0} ml</p>
           </div>
         </section>
       )}

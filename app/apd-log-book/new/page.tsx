@@ -21,10 +21,10 @@ export default async function NewApdLogPage({
   return (
     <ApdShell>
       <div className="mb-8">
-        <p className="text-green-400 text-xs font-mono tracking-widest mb-3">
+        <p className="text-[#2F6BFF] text-xs font-bold tracking-[0.18em] mb-3">
           {"// บันทึกใหม่"}
         </p>
-        <h1 className="text-3xl font-bold tracking-tight text-white">บันทึก APD ประจำวัน</h1>
+        <h1 className="text-3xl font-black tracking-tight text-[#111827]">บันทึก APD ประจำวัน</h1>
       </div>
       <DailyLogForm
         action={createDailyLog}
